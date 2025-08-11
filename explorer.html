@@ -298,53 +298,77 @@
   <script>
     // --- Multi-chain wallet integration (Ethereum & Solana) ---
     const multiChainBar = document.getElementById('multiChainBar');
+    let ethWallet = { address: null, balance: null };
+    let solWallet = { address: null, balance: null };
+
     function renderMultiChainWallet(eth, sol) {
       multiChainBar.innerHTML = `
         <div class="chain-card">
-          <div class="chain-title">Ethereum</div>
+          <div class="chain-title">Ethereum (MetaMask)</div>
           <div class="chain-address">${eth.address ? eth.address : 'Not connected'}</div>
           <div class="chain-balance">${eth.balance ? eth.balance : '-- ETH'}</div>
-          <button onclick="connectEthWallet()">Connect Wallet</button>
+          <button onclick="connectEthWallet()">Connect MetaMask</button>
         </div>
         <div class="chain-card">
-          <div class="chain-title">Solana</div>
+          <div class="chain-title">Solana (Phantom)</div>
           <div class="chain-address">${sol.address ? sol.address : 'Not connected'}</div>
           <div class="chain-balance">${sol.balance ? sol.balance : '-- SOL'}</div>
-          <button onclick="connectSolWallet()">Connect Wallet</button>
+          <button onclick="connectSolWallet()">Connect Phantom</button>
         </div>
       `;
     }
+
     window.connectEthWallet = async function() {
       if (window.ethereum) {
-        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const balance = await provider.getBalance(accounts[0]);
-        renderMultiChainWallet({ address: accounts[0], balance: ethers.utils.formatEther(balance) + " ETH" }, { address: null, balance: null });
+        try {
+          const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const balance = await provider.getBalance(accounts[0]);
+          ethWallet = {
+            address: accounts[0],
+            balance: ethers.utils.formatEther(balance) + " ETH"
+          };
+          renderMultiChainWallet(ethWallet, solWallet);
+        } catch (err) {
+          alert("MetaMask connection failed: " + err.message);
+        }
+      } else {
+        alert("MetaMask not detected. Please install MetaMask extension.");
       }
-    }
+    };
+
     window.connectSolWallet = async function() {
       if (window.solana && window.solana.isPhantom) {
-        const resp = await window.solana.connect();
-        fetch("https://api.mainnet-beta.solana.com", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            jsonrpc: "2.0",
-            id: 1,
-            method: "getBalance",
-            params: [resp.publicKey.toString()]
+        try {
+          const resp = await window.solana.connect();
+          // Get balance from Solana RPC
+          fetch("https://api.mainnet-beta.solana.com", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              jsonrpc: "2.0",
+              id: 1,
+              method: "getBalance",
+              params: [resp.publicKey.toString()]
+            })
           })
-        })
-        .then(res => res.json())
-        .then(data => {
-          renderMultiChainWallet(
-            { address: null, balance: null },
-            { address: resp.publicKey.toString(), balance: (data.result.value / 1e9).toFixed(4) + " SOL" }
-          );
-        });
+          .then(res => res.json())
+          .then(data => {
+            solWallet = {
+              address: resp.publicKey.toString(),
+              balance: (data.result.value / 1e9).toFixed(4) + " SOL"
+            };
+            renderMultiChainWallet(ethWallet, solWallet);
+          });
+        } catch (err) {
+          alert("Phantom connection failed: " + err.message);
+        }
+      } else {
+        alert("Phantom wallet not detected. Please install Phantom extension.");
       }
-    }
-    renderMultiChainWallet({ address: null, balance: null }, { address: null, balance: null });
+    };
+
+    renderMultiChainWallet(ethWallet, solWallet);
 
     // --- Real-time analytics chart ---
     const analyticsCtx = document.getElementById('analyticsChart').getContext('2d');
