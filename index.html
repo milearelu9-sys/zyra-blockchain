@@ -489,8 +489,8 @@
 
     async function getChatGPTAnswer(question) {
       // Replace YOUR_OPENAI_API_KEY with your actual OpenAI API key
-      const apiKey = "_https://chatgpt.com";
-      const endpoint = "https://chatgpt.com";
+      const apiKey = "YOUR_OPENAI_API_KEY";
+      const endpoint = "https://api.openai.com/v1/chat/completions";
       const payload = {
         model: "gpt-3.5-turbo",
         messages: [
@@ -645,6 +645,66 @@
 
     document.body.setAttribute('lang', 'en');
     document.body.setAttribute('aria-label', 'Zyra Blockchain Dashboard');
+
+    // MetaMask connection logic
+    const connectWalletBtn = document.getElementById('connectWalletBtn');
+    const walletAddressSpan = document.getElementById('walletAddress');
+    const walletBalanceSpan = document.getElementById('walletBalance');
+    const donateBtn = document.getElementById('donateBtn');
+
+    let walletAddress = null;
+
+    connectWalletBtn.onclick = async function() {
+      if (!window.ethereum) {
+        alert("MetaMask not detected. Please install MetaMask extension.");
+        return;
+      }
+      try {
+        connectWalletBtn.disabled = true;
+        connectWalletBtn.textContent = "Connecting...";
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        walletAddress = accounts[0];
+        walletAddressSpan.textContent = walletAddress.slice(0, 6) + "..." + walletAddress.slice(-4);
+        connectWalletBtn.textContent = "Disconnect Wallet";
+        connectWalletBtn.disabled = false;
+        donateBtn.disabled = false;
+
+        // Get balance
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const balance = await provider.getBalance(walletAddress);
+        walletBalanceSpan.textContent = ethers.utils.formatEther(balance) + " ETH";
+
+        // Disconnect logic
+        connectWalletBtn.onclick = function() {
+          walletAddress = null;
+          walletAddressSpan.textContent = "Not connected";
+          walletBalanceSpan.textContent = "-- ZYRA";
+          connectWalletBtn.textContent = "Connect Wallet";
+          donateBtn.disabled = true;
+          connectWalletBtn.onclick = connectWalletBtn;
+        };
+      } catch (err) {
+        alert("Wallet connection failed: " + err.message);
+        connectWalletBtn.textContent = "Connect Wallet";
+        connectWalletBtn.disabled = false;
+      }
+    };
+
+    // Donate button logic (send 0.001 ETH)
+    donateBtn.onclick = async function() {
+      if (!walletAddress) return;
+      try {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const tx = await signer.sendTransaction({
+          to: "0x000000000000000000000000000000000000dead", // Replace with your donation address
+          value: ethers.utils.parseEther("0.001")
+        });
+        alert("Donation sent! Tx hash: " + tx.hash);
+      } catch (err) {
+        alert("Donation failed: " + err.message);
+      }
+    };
   </script>
 </body>
-</html>
+</html>  
