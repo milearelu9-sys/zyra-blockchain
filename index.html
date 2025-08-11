@@ -5,6 +5,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Zyra Blockchain Dashboard</title>
   <style>
+    /* Zyra Dark Theme */
+body {
+  background: linear-gradient(160deg, #0a0a0a, #0f1a1a);
+  color: #e5e5e5;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.dashboard-container {
+  padding: 30px;
+  max-width: 1200px;
+  margin: auto;
+}
+.dashboard-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #00ff88;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+.stat-card {
+  background: rgba(20, 20, 20, 0.8);
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 255, 136, 0.1);
+}
+.stat-card:hover {
+  transform: translateY(-5px);
+  border-color: #00ff88;
+  box-shadow: 0 6px 16px rgba(0, 255, 136, 0.3);
+}
+.stat-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #00ff88;
+}
+.stat-label {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+.chart-container {
+  margin-top: 40px;
+  background: rgba(20, 20, 20, 0.85);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: 12px;
+  padding: 20px;
+}
     body {
       font-family: 'Inter', sans-serif;
       background: linear-gradient(135deg, #0047ab 0%, #001f4d 100%);
@@ -311,6 +366,35 @@
       </div>
     </div>
   </header>
+  <div class="dashboard-container">
+    <h1 class="dashboard-title">Zyra Blockchain Dashboard</h1>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="darkTps">--</div>
+        <div class="stat-label">Transactions per Second</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="darkNodes">--</div>
+        <div class="stat-label">Active Nodes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="darkLatency">-- ms</div>
+        <div class="stat-label">Average Latency</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="darkFinality">-- s</div>
+        <div class="stat-label">Finality Time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="darkHealth">--</div>
+        <div class="stat-label">Network Health</div>
+      </div>
+    </div>
+    <div class="chart-container">
+      <h3 style="color: #00ff88;">Network TPS Chart</h3>
+      <canvas id="darkChart" height="120"></canvas>
+    </div>
+  </div>
   <main>
     <h1>Zyra Blockchain Dashboard</h1>
     <div class="overall-stats">
@@ -697,7 +781,7 @@
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const tx = await signer.sendTransaction({
-          to: "0x000000000000000000000000000000000000dead", // Replace with your donation address
+          to: "0xE558B4a71aCEe20317B2A5f7710a317eF54E0bC6", // Updated donation address
           value: ethers.utils.parseEther("0.001")
         });
         alert("Donation sent! Tx hash: " + tx.hash);
@@ -705,6 +789,69 @@
         alert("Donation failed: " + err.message);
       }
     };
+
+    // Update dark theme dashboard stats
+  function updateDarkDashboard(tps, nodes, latency, finality, health) {
+    document.getElementById('darkTps').textContent = tps.toLocaleString();
+    document.getElementById('darkNodes').textContent = nodes;
+    document.getElementById('darkLatency').textContent = latency + " ms";
+    document.getElementById('darkFinality').textContent = finality + " s";
+    document.getElementById('darkHealth').textContent = health;
+  }
+
+  // Dark theme chart
+  const darkChartCtx = document.getElementById('darkChart').getContext('2d');
+  const darkChart = new Chart(darkChartCtx, {
+    type: 'line',
+    data: {
+      labels: Array.from({length: 10}, (_, i) => `T-${10-i}`),
+      datasets: [{
+        label: 'TPS',
+        data: Array(10).fill(0),
+        borderColor: '#00ff88',
+        backgroundColor: 'rgba(0,255,136,0.08)',
+        fill: true,
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { color: '#00ff88' } }, x: { ticks: { color: '#00ff88' } } }
+    }
+  });
+
+  // Update both dashboards every 3 seconds
+  function updateBothDashboards() {
+    const tps = Math.floor(Math.random() * 1000) + 50000;
+    const nodes = validatorNodes.length;
+    const latency = Math.floor(Math.random() * 40) + 80;
+    const finality = (Math.random() * 2 + 1).toFixed(2);
+    const health = (tps > 50000 && latency < 120 && nodes > 5) ? "Excellent" : "Good";
+
+    // Update default dashboard
+    document.getElementById('totalTps').textContent = tps.toLocaleString();
+    document.getElementById('activeNodes').textContent = nodes;
+    document.getElementById('avgLatency').textContent = latency + " ms";
+    document.getElementById('finalityTime').textContent = finality + " s";
+    document.getElementById('networkHealth').textContent = health;
+
+    // Update dark theme dashboard
+    updateDarkDashboard(tps, nodes, latency, finality, health);
+
+    // Update dark chart
+    darkChart.data.datasets[0].data.push(tps);
+    if (darkChart.data.datasets[0].data.length > 10) darkChart.data.datasets[0].data.shift();
+    darkChart.update();
+  }
+
+  setInterval(updateBothDashboards, 3000);
+  updateBothDashboards();
+
+  // Exchange page button logic
+  document.getElementById('exchangePageBtn').onclick = function() {
+    window.location.href = "exchange.html";
+  };
   </script>
 </body>
-</html>  
+</html>
