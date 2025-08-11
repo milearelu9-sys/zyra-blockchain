@@ -1,1 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zyra Exchange</title>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0047ab 0%, #001f4d 100%);
+      color: #d0e8ff;
+      margin: 0;
+      min-height: 100vh;
+    }
+    .exchange-container {
+      max-width: 480px;
+      margin: 4rem auto;
+      background: rgba(30, 60, 130, 0.7);
+      border-radius: 15px;
+      padding: 2rem 2.5rem;
+      box-shadow: 0 0 12px #3385ff99;
+      color: #d0e8ff;
+    }
+    h1 {
+      text-align: center;
+      color: #a8d0ff;
+      margin-bottom: 2rem;
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+    label {
+      font-weight: 600;
+      color: #a8d0ff;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    select, input {
+      width: 100%;
+      padding: 0.7rem;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 1.2rem;
+      font-size: 1rem;
+      background: #1e293b;
+      color: #d0e8ff;
+    }
+    button {
+      background: #3385ff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7rem 1.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 0.5rem;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background: #66b2ff;
+    }
+    .result {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-size: 1.15rem;
+      color: #7eff7e;
+      font-weight: 600;
+    }
+    .rate-info {
+      text-align: center;
+      color: #a0c4ff;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="exchange-container">
+    <h1>Zyra Exchange</h1>
+    <label for="fromCoin">From:</label>
+    <select id="fromCoin">
+      <option value="ZYRA">Zyra (ZYRA)</option>
+      <option value="BTC">Bitcoin (BTC)</option>
+      <option value="ETH">Ethereum (ETH)</option>
+      <option value="SOL">Solana (SOL)</option>
+      <option value="BNB">BNB Chain (BNB)</option>
+      <option value="XRP">Ripple (XRP)</option>
+      <option value="KAS">Kaspa (KAS)</option>
+      <option value="USDT">Tether (USDT)</option>
+      <option value="USDC">USD Coin (USDC)</option>
+      <option value="ADA">Cardano (ADA)</option>
+      <option value="DOGE">Dogecoin (DOGE)</option>
+      <option value="TRX">Tron (TRX)</option>
+      <option value="DOT">Polkadot (DOT)</option>
+      <option value="AVAX">Avalanche (AVAX)</option>
+      <option value="MATIC">Polygon (MATIC)</option>
+      <option value="LTC">Litecoin (LTC)</option>
+      <option value="SHIB">Shiba Inu (SHIB)</option>
+      <option value="ATOM">Cosmos (ATOM)</option>
+      <option value="LINK">Chainlink (LINK)</option>
+      <option value="OP">Optimism (OP)</option>
+      <option value="ARB">Arbitrum (ARB)</option>
+    </select>
 
+    <label for="fromAmount">Amount:</label>
+    <input type="number" id="fromAmount" min="0" step="any" placeholder="Enter amount" />
+
+    <label for="toCoin">Convert to:</label>
+    <select id="toCoin">
+      <option value="BTC">Bitcoin (BTC)</option>
+      <option value="ETH">Ethereum (ETH)</option>
+      <option value="SOL">Solana (SOL)</option>
+      <option value="BNB">BNB Chain (BNB)</option>
+      <option value="XRP">Ripple (XRP)</option>
+      <option value="KAS">Kaspa (KAS)</option>
+      <option value="USDT">Tether (USDT)</option>
+      <option value="USDC">USD Coin (USDC)</option>
+      <option value="ADA">Cardano (ADA)</option>
+      <option value="DOGE">Dogecoin (DOGE)</option>
+      <option value="TRX">Tron (TRX)</option>
+      <option value="DOT">Polkadot (DOT)</option>
+      <option value="AVAX">Avalanche (AVAX)</option>
+      <option value="MATIC">Polygon (MATIC)</option>
+      <option value="LTC">Litecoin (LTC)</option>
+      <option value="SHIB">Shiba Inu (SHIB)</option>
+      <option value="ATOM">Cosmos (ATOM)</option>
+      <option value="LINK">Chainlink (LINK)</option>
+      <option value="OP">Optimism (OP)</option>
+      <option value="ARB">Arbitrum (ARB)</option>
+      <option value="ZYRA">Zyra (ZYRA)</option>
+    </select>
+
+    <div class="rate-info" id="rateInfo"></div>
+    <button id="exchangeBtn">Convert</button>
+    <div class="result" id="exchangeResult"></div>
+  </div>
+  <script>
+    // Example rates (fromCoin -> toCoin, for demo only)
+    // All rates are for 1 unit of fromCoin to toCoin
+    const rates = {
+      ZYRA: { BTC: 0.0000021, ETH: 0.000031, SOL: 0.002, BNB: 0.00019, XRP: 0.09, KAS: 0.13, USDT: 0.12, USDC: 0.12, ADA: 0.18, DOGE: 2.1, TRX: 1.6, DOT: 0.021, AVAX: 0.009, MATIC: 0.19, LTC: 0.001, SHIB: 21000, ATOM: 0.008, LINK: 0.008, OP: 0.09, ARB: 0.09 },
+      BTC: { ZYRA: 476190, ETH: 14.7, USDT: 57000, SOL: 950, BNB: 90, XRP: 43000, ADA: 260000, DOGE: 10000000, KAS: 62000, USDC: 57000, TRX: 370000, DOT: 2100, AVAX: 950, MATIC: 90000, LTC: 420, SHIB: 21000000000, ATOM: 800, LINK: 800, OP: 43000, ARB: 43000 },
+      ETH: { ZYRA: 32258, BTC: 0.068, USDT: 3900, SOL: 65, BNB: 6.1, XRP: 2900, ADA: 17500, DOGE: 670000, KAS: 4200, USDC: 3900, TRX: 25000, DOT: 140, AVAX: 65, MATIC: 6200, LTC: 29, SHIB: 3900000000, ATOM: 50, LINK: 50, OP: 2900, ARB: 2900 },
+      SOL: { ZYRA: 500, BTC: 0.00105, ETH: 0.015, USDT: 60, BNB: 0.94, XRP: 27, ADA: 180, DOGE: 7000, KAS: 40, USDC: 60, TRX: 400, DOT: 2.2, AVAX: 1, MATIC: 19, LTC: 0.09, SHIB: 60000000, ATOM: 0.8, LINK: 0.8, OP: 27, ARB: 27 },
+      USDT: { ZYRA: 8.33, BTC: 0.0000175, ETH: 0.000256, SOL: 0.016, BNB: 0.0016, XRP: 0.75, ADA: 1.5, DOGE: 17.5, KAS: 1.08, USDC: 1, TRX: 6.5, DOT: 0.036, AVAX: 0.016, MATIC: 1.6, LTC: 0.00085, SHIB: 175000, ATOM: 0.013, LINK: 0.013, OP: 0.75, ARB: 0.75 },
+      // Add similar objects for other coins if needed for demo
+    };
+
+    function updateRateInfo() {
+      const from = document.getElementById('fromCoin').value;
+      const to = document.getElementById('toCoin').value;
+      let info = '';
+      if (rates[from] && rates[from][to]) {
+        info = `1 ${from} ≈ ${rates[from][to]} ${to}`;
+      } else {
+        info = "Exchange rate unavailable for this pair.";
+      }
+      document.getElementById('rateInfo').textContent = info;
+    }
+
+    document.getElementById('fromCoin').onchange = updateRateInfo;
+    document.getElementById('toCoin').onchange = updateRateInfo;
+
+    document.getElementById('exchangeBtn').onclick = function() {
+      const from = document.getElementById('fromCoin').value;
+      const to = document.getElementById('toCoin').value;
+      const amount = parseFloat(document.getElementById('fromAmount').value);
+      if (isNaN(amount) || amount <= 0) {
+        document.getElementById('exchangeResult').textContent = "Enter a valid amount.";
+        return;
+      }
+      if (!rates[from] || !rates[from][to]) {
+        document.getElementById('exchangeResult').textContent = "Exchange rate unavailable for this pair.";
+        return;
+      }
+      const converted = amount * rates[from][to];
+      document.getElementById('exchangeResult').textContent =
+        `${amount} ${from} ≈ ${converted.toLocaleString(undefined, {maximumFractionDigits: 8})} ${to}`;
+    };
+
+    updateRateInfo();
+  </script>
+</body>
+</html>
