@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zyra Blockchain Explorer</title>
+  <meta name="description" content="Zyra: The most advanced blockchain explorer with real-time search, analytics, and multi-chain support." />
+  <link rel="icon" href="zyra-logo.svg" />
+  <style>
+    body {
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #0047ab 0%, #001f4d 100%);
+      color: #d0e8ff;
+      margin: 0;
+      min-height: 100vh;
+      transition: background 0.5s;
+    }
+    header {
+      padding: 1rem 3rem;
+      background: rgba(0, 71, 171, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: #a8d0ff;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    nav {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    nav a {
+      font-weight: 600;
+      font-size: 1rem;
+      color: #a8d0ff;
+      text-decoration: none;
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    nav a:hover, nav a:focus {
+      background-color: #3385ffcc;
+      color: #001f4d;
+      outline: 2px solid #66b2ff;
+      outline-offset: 2px;
+    }
+    main {
+      max-width: 1000px;
+      margin: 2rem auto;
+      background: rgba(30, 60, 130, 0.7);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 0 20px #3399ffbb;
+    }
+    h1 {
+      color: #a8d0ff;
+      font-size: 2.4rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      animation: fadeIn 1s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-30px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .search-bar {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .search-bar input {
+      padding: 0.7rem 1.2rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      width: 320px;
+      background: #e0f0ff;
+      color: #0047ab;
+      transition: box-shadow 0.2s;
+    }
+    .search-bar input:focus {
+      box-shadow: 0 0 0 2px #3385ff;
+      outline: none;
+    }
+    .search-bar button {
+      background: #1e3c82;
+      color: #a8d0ff;
+      border: 1.5px solid #3385ff;
+      border-radius: 8px;
+      padding: 0.7rem 1.5rem;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .search-bar button:hover, .search-bar button:focus {
+      background-color: #3385ff;
+      color: #001f4d;
+      outline: 2px solid #66b2ff;
+      outline-offset: 2px;
+    }
+    .results {
+      margin-top: 2rem;
+    }
+    .result-card {
+      background: rgba(50, 100, 255, 0.15);
+      border-radius: 10px;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 2px 8px #3385ff44;
+      color: #cce4ff;
+      animation: fadeIn 0.7s;
+    }
+    .result-title {
+      font-weight: 700;
+      color: #66b2ff;
+      margin-bottom: 0.5rem;
+      font-size: 1.15rem;
+    }
+    .result-details {
+      font-size: 1rem;
+      color: #e0f0ff;
+      word-break: break-word;
+    }
+    .result-details a {
+      color: #99c9ff;
+      text-decoration: underline;
+    }
+    .result-details .status-confirmed {
+      color: #7eff7e;
+      font-weight: 600;
+    }
+    .result-details .status-pending {
+      color: #ffb366;
+      font-weight: 600;
+    }
+    .analytics-section {
+      margin-top: 2.5rem;
+      background: rgba(30, 60, 130, 0.7);
+      border-radius: 15px;
+      padding: 1.5rem;
+      box-shadow: 0 0 12px #3399ff99;
+      color: #d0e8ff;
+      animation: fadeIn 1.3s;
+    }
+    .multi-chain-bar {
+      margin-top: 2rem;
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .chain-card {
+      background: rgba(50, 100, 255, 0.15);
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      color: #cce4ff;
+      min-width: 180px;
+      text-align: center;
+      box-shadow: 0 2px 8px #3385ff44;
+      font-weight: 600;
+    }
+    .chain-card .chain-title {
+      color: #66b2ff;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .chain-card .chain-address {
+      font-size: 0.95rem;
+      color: #e0f0ff;
+      word-break: break-all;
+    }
+    .chain-card .chain-balance {
+      font-size: 1.05rem;
+      color: #7eff7e;
+      margin-top: 0.5rem;
+    }
+    .chain-card button {
+      margin-top: 0.7rem;
+      background: #3385ff;
+      color: #001f4d;
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .chain-card button:hover {
+      background: #66b2ff;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem 0;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: #a0c4ffbb;
+      background: rgba(0, 31, 77, 0.8);
+      letter-spacing: 0.08em;
+      margin-top: 2rem;
+    }
+    @media (max-width: 650px) {
+      header {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem 1.5rem;
+      }
+      main {
+        padding: 2rem 1rem;
+      }
+      .search-bar input {
+        width: 100%;
+      }
+      .multi-chain-bar {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="19" cy="19" r="18" stroke="#3385ff" stroke-width="2" fill="#0047ab"/>
+        <path d="M19 8L25 19H13L19 8Z" fill="#a8d0ff"/>
+        <circle cx="19" cy="25" r="4" fill="#66b2ff"/>
+      </svg>
+      ZYRA
+    </div>
+    <nav aria-label="Main Navigation">
+      <a href="index.html">Dashboard</a>
+      <a href="explorer.html">Explorer</a>
+      <a href="validators.html">Validators</a>
+      <a href="governance.html">Governance</a>
+      <a href="launchpad.html">Launchpad</a>
+      <a href="nfts.html">NFTs</a>
+      <a href="docs.html">Docs</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Zyra Blockchain Explorer</h1>
+    <div class="search-bar">
+      <input type="text" id="explorerSearch" placeholder="Search block, transaction, address, NFT, or validator..." aria-label="Search" autocomplete="off" />
+      <button id="searchBtn" aria-label="Search">Search</button>
+      <button id="advancedSearchBtn" aria-label="Advanced Search">⚙️</button>
+    </div>
+    <div id="advancedSearchPanel" style="display:none;margin-bottom:1rem;">
+      <label>
+        <input type="checkbox" id="searchNFTs" /> NFTs
+      </label>
+      <label>
+        <input type="checkbox" id="searchValidators" /> Validators
+      </label>
+      <label>
+        <input type="checkbox" id="searchTokens" /> Tokens
+      </label>
+      <label>
+        <input type="checkbox" id="searchContracts" /> Smart Contracts
+      </label>
+    </div>
+    <div class="multi-chain-bar" id="multiChainBar"></div>
+    <div class="results" id="results"></div>
+    <div class="analytics-section">
+      <h2 style="text-align:center;color:#a8d0ff;">Live Analytics</h2>
+      <canvas id="analyticsChart" height="120"></canvas>
+      <div id="nodeCount" style="text-align:center;margin-top:1rem;font-size:1.1rem;color:#7eff7e;"></div>
+    </div>
+    <div class="nft-gallery" id="nftGallery" style="margin-top:2rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.2rem;"></div>
+    <div class="governance-section" id="governancePanel" style="margin-top:2rem;"></div>
+    <div class="explorer-switch-bar" style="margin:2rem 0;text-align:center;">
+      <span style="font-weight:600;color:#a8d0ff;margin-right:1rem;">Switch Explorer:</span>
+      <button onclick="window.open('https://www.blockchain.com/explorer', '_blank')" style="background:#f7931a;color:#fff;border:none;border-radius:8px;padding:0.5rem 1.2rem;font-weight:600;cursor:pointer;margin-right:0.5rem;">BTC</button>
+      <button onclick="window.open('https://explorer.solana.com/', '_blank')" style="background:#00ffa3;color:#001f4d;border:none;border-radius:8px;padding:0.5rem 1.2rem;font-weight:600;cursor:pointer;margin-right:0.5rem;">SOL</button>
+      <button onclick="window.open('https://xrpscan.com/', '_blank')" style="background:#346aa9;color:#fff;border:none;border-radius:8px;padding:0.5rem 1.2rem;font-weight:600;cursor:pointer;margin-right:0.5rem;">XRP</button>
+      <button onclick="window.open('https://etherscan.io/', '_blank')" style="background:#627eea;color:#fff;border:none;border-radius:8px;padding:0.5rem 1.2rem;font-weight:600;cursor:pointer;margin-right:0.5rem;">ETH</button>
+      <button onclick="window.open('https://explorer.kaspa.org/', '_blank')" style="background:#00bcd4;color:#fff;border:none;border-radius:8px;padding:0.5rem 1.2rem;font-weight:600;cursor:pointer;margin-right:0.5rem;">Kaspa</button>
+      <button onclick="window.open('https://zyra.network/explorer', '_blank')" style="background:#3385ff;color:#fff;border:none;border-radius:8px;padding:0.5rem 1.2rem;font-weight:600;cursor:pointer;">ZYRA</button>
+    </div>
+  </main>
+  <footer>
+    © 2025 Zyra Blockchain. All rights reserved.
+  </footer>
+  <script>
+    // --- Multi-chain wallet integration (Ethereum & Solana) ---
+    const multiChainBar = document.getElementById('multiChainBar');
+    function renderMultiChainWallet(eth, sol) {
+      multiChainBar.innerHTML = `
+        <div class="chain-card">
+          <div class="chain-title">Ethereum</div>
+          <div class="chain-address">${eth.address ? eth.address : 'Not connected'}</div>
+          <div class="chain-balance">${eth.balance ? eth.balance : '-- ETH'}</div>
+          <button onclick="connectEthWallet()">Connect Wallet</button>
+        </div>
+        <div class="chain-card">
+          <div class="chain-title">Solana</div>
+          <div class="chain-address">${sol.address ? sol.address : 'Not connected'}</div>
+          <div class="chain-balance">${sol.balance ? sol.balance : '-- SOL'}</div>
+          <button onclick="connectSolWallet()">Connect Wallet</button>
+        </div>
+      `;
+    }
+    window.connectEthWallet = async function() {
+      if (window.ethereum) {
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const balance = await provider.getBalance(accounts[0]);
+        renderMultiChainWallet({ address: accounts[0], balance: ethers.utils.formatEther(balance) + " ETH" }, { address: null, balance: null });
+      }
+    }
+    window.connectSolWallet = async function() {
+      if (window.solana && window.solana.isPhantom) {
+        const resp = await window.solana.connect();
+        fetch("https://api.mainnet-beta.solana.com", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            jsonrpc: "2.0",
+            id: 1,
+            method: "getBalance",
+            params: [resp.publicKey.toString()]
+          })
+        })
+        .then(res => res.json())
+        .then(data => {
+          renderMultiChainWallet(
+            { address: null, balance: null },
+            { address: resp.publicKey.toString(), balance: (data.result.value / 1e9).toFixed(4) + " SOL" }
+          );
+        });
+      }
+    }
+    renderMultiChainWallet({ address: null, balance: null }, { address: null, balance: null });
+
+    // --- Real-time analytics chart ---
+    const analyticsCtx = document.getElementById('analyticsChart').getContext('2d');
+    const analyticsChart = new Chart(analyticsCtx, {
+      type: 'bar',
+      data: {
+        labels: ['TPS', 'Nodes', 'Latency', 'Finality'],
+        datasets: [{
+          label: 'Live Metrics',
+          data: [0,0,0,0],
+          backgroundColor: ['#66b2ff','#a8d0ff','#ffb366','#7eff7e']
+        }]
+      },
+      options: {
+        scales: { y: { beginAtZero: true } },
+        plugins: { legend: { display: false } }
+      }
+    });
+    // Update analytics chart via WebSocket
+    const analyticsWs = new WebSocket("wss://api.zyra.network/analytics");
+    const nodeCountDiv = document.getElementById('nodeCount');
+    analyticsWs.onmessage = function(event) {
+      try {
+        const data = JSON.parse(event.data);
+        analyticsChart.data.datasets[0].data = [
+          data.tps, data.nodes, data.latency, data.finality
+        ];
+        analyticsChart.update();
+        nodeCountDiv.textContent = `Active Nodes: ${data.nodes}`;
+      } catch(e) {}
+    };
+
+    // --- Real-time NFT Gallery ---
+    const nftGallery = document.getElementById('nftGallery');
+    const nftWs = new WebSocket("wss://api.zyra.network/nft-stream");
+    nftWs.onmessage = function(event) {
+      try {
+        const nfts = JSON.parse(event.data);
+        nftGallery.innerHTML = '';
+        nfts.forEach(nft => {
+          const card = document.createElement('div');
+          card.style = "background:#1e293b;border-radius:12px;padding:1rem;text-align:center;color:#d0e8ff;box-shadow:0 2px 8px #3385ff44;";
+          card.innerHTML = `
+            <img src="${nft.image}" alt="${nft.name}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;margin-bottom:0.7rem;">
+            <div style="font-weight:700;">${nft.name}</div>
+            <div style="font-size:0.95rem;">${nft.description || ''}</div>
+            <div style="font-size:0.85rem;color:#66b2ff;margin-top:0.5rem;">Owner: ${nft.owner.slice(0,8)}...</div>
+          `;
+          nftGallery.appendChild(card);
+        });
+      } catch(e) {}
+    };
+
+    // --- Governance Voting (live proposals & voting) ---
+    async function fetchProposals() {
+      const res = await fetch("https://api.zyra.network/governance/proposals");
+      const proposals = await res.json();
+      renderGovernanceVoting(proposals);
+    }
+    function renderGovernanceVoting(proposals) {
+      const panel = document.getElementById('governancePanel');
+      panel.innerHTML = '';
+      proposals.forEach(p => {
+        const div = document.createElement('div');
+        div.style = "background:#1e293b;border-radius:10px;padding:1rem;margin-bottom:1rem;color:#d0e8ff;box-shadow:0 2px 8px #3385ff44;";
+        div.innerHTML = `
+          <div style="font-weight:700;">${p.title}</div>
+          <div style="font-size:0.95rem;">${p.description}</div>
+          <div style="margin-top:0.7rem;">
+            <button onclick="voteProposal('${p.id}','yes')" style="margin-right:1rem;">Vote Yes</button>
+            <button onclick="voteProposal('${p.id}','no')">Vote No</button>
+          </div>
+          <div style="margin-top:0.5rem;font-size:0.85rem;color:#66b2ff;">Yes: ${p.votes_yes} | No: ${p.votes_no}</div>
+        `;
+        panel.appendChild(div);
+      });
+    }
+    async function voteProposal(id, vote) {
+      await fetch("https://api.zyra.network/governance/vote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ proposal_id: id, vote })
+      });
+      fetchProposals();
+    }
+    fetchProposals();
+
+    // --- Advanced search logic with real-time suggestions and filters ---
+    const searchBtn = document.getElementById('searchBtn');
+    const explorerSearch = document.getElementById('explorerSearch');
+    const resultsDiv = document.getElementById('results');
+    const advancedSearchBtn = document.getElementById('advancedSearchBtn');
+    const advancedSearchPanel = document.getElementById('advancedSearchPanel');
+
+    advancedSearchBtn.onclick = () => {
+      advancedSearchPanel.style.display = advancedSearchPanel.style.display === "none" ? "block" : "none";
+    };
+
+    explorerSearch.addEventListener('input', async () => {
+      const q = explorerSearch.value.trim();
+      if (q.length > 2) {
+        // Simulate suggestion fetch
+        resultsDiv.innerHTML = `<div class="result-card">Suggestions: <b>${q}123</b>, <b>${q}abc</b></div>`;
+      } else {
+        resultsDiv.innerHTML = '';
+      }
+    });
+
+    searchBtn.addEventListener('click', async () => {
+      const query = explorerSearch.value.trim();
+      const filters = {
+        nfts: document.getElementById('searchNFTs').checked,
+        validators: document.getElementById('searchValidators').checked,
+        tokens: document.getElementById('searchTokens').checked,
+        contracts: document.getElementById('searchContracts').checked
+      };
+      resultsDiv.innerHTML = '';
+      if (!query) {
+        resultsDiv.innerHTML = '<div class="result-card">Please enter a search term.</div>';
+        return;
+      }
+      // Simulate results with advanced filters
+      let results = [];
+      if (filters.nfts) {
+        results.push(`<div class="result-card"><div class="result-title">NFT</div><div class="result-details">Name: ${query}NFT<br>Owner: 0xAb12...4Ef8</div></div>`);
+      }
+      if (filters.validators) {
+        results.push(`<div class="result-card"><div class="result-title">Validator</div><div class="result-details">Validator: ${query}Node<br>Status: Online</div></div>`);
+      }
+      if (filters.tokens) {
+        results.push(`<div class="result-card"><div class="result-title">Token</div><div class="result-details">Token: ${query}Token<br>Supply: 1,000,000</div></div>`);
+      }
+      if (filters.contracts) {
+        results.push(`<div class="result-card"><div class="result-title">Smart Contract</div><div class="result-details">Contract: ${query}Contract<br>Status: Verified</div></div>`);
+      }
+      if (results.length === 0) {
+        // Fallback to default logic
+        if (query.startsWith('0x9a4f')) {
+          results.push(`
+            <div class="result-card">
+              <div class="result-title">Transaction</div>
+              <div class="result-details">
+                Hash: <a href="#">${query}</a><br>
+                From: <a href="#">0xAb12...4Ef8</a><br>
+                To: <a href="#">0xCd34...1A7B</a><br>
+                Amount: 12.5 ZYRA<br>
+                Status: <span class="status-confirmed">Confirmed</span><br>
+                Timestamp: 2025-07-31 15:04:20
+              </div>
+            </div>
+          `);
+        } else if (query.startsWith('0xAb12')) {
+          results.push(`
+            <div class="result-card">
+              <div class="result-title">Address</div>
+              <div class="result-details">
+                Address: <a href="#">${query}</a><br>
+                Balance: 1200.5 ZYRA<br>
+                Transactions: 3<br>
+                Last Active: 2025-07-31 15:06:40
+              </div>
+            </div>
+          `);
+        } else if (!isNaN(query)) {
+          results.push(`
+            <div class="result-card">
+              <div class="result-title">Block</div>
+              <div class="result-details">
+                Block Number: <a href="#">${query}</a><br>
+                Transactions: 5<br>
+                Miner: Zyra-Node-2<br>
+                Timestamp: 2025-07-31 15:05:10
+              </div>
+            </div>
+          `);
+        } else {
+          results.push(`
+            <div class="result-card">
+              <div class="result-title">No Results</div>
+              <div class="result-details">
+                No matching block, transaction, or address found for "<b>${query}</b>".
+              </div>
+            </div>
+          `);
+        }
+      }
+      resultsDiv.innerHTML = results.join('');
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+</body>
+</html>

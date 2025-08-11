@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zyra Blockchain Validators</title>
+  <meta name="description" content="Zyra: The most advanced validator dashboard with real-time stats, analytics, and staking." />
+  <link rel="icon" href="zyra-logo.svg" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0047ab 0%, #001f4d 100%);
+      color: #d0e8ff;
+      margin: 0;
+      min-height: 100vh;
+    }
+    header {
+      padding: 1rem 3rem;
+      background: rgba(0, 71, 171, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: #a8d0ff;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    nav {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    nav a {
+      font-weight: 600;
+      font-size: 1rem;
+      color: #a8d0ff;
+      text-decoration: none;
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+    nav a:hover, nav a:focus {
+      background-color: #3385ffcc;
+      color: #001f4d;
+      outline: 2px solid #66b2ff;
+      outline-offset: 2px;
+    }
+    main {
+      max-width: 1100px;
+      margin: 2rem auto;
+      background: rgba(30, 60, 130, 0.7);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 0 20px #3399ffbb;
+    }
+    h1 {
+      color: #a8d0ff;
+      font-size: 2.4rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      animation: fadeIn 1s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-30px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .validators-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .validator-card {
+      background: rgba(30, 60, 130, 0.85);
+      border-radius: 18px;
+      padding: 2rem 2.2rem;
+      box-shadow: 0 0 18px #3399ff99;
+      color: #d0e8ff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      transition: box-shadow 0.3s, transform 0.3s;
+      cursor: pointer;
+      animation: fadeIn 1.2s;
+      position: relative;
+    }
+    .validator-card:hover {
+      box-shadow: 0 0 32px #66b2ffcc;
+      transform: scale(1.04);
+    }
+    .validator-card h3 {
+      margin: 0 0 0.5rem 0;
+      font-weight: 700;
+      font-size: 1.35rem;
+      color: #66b2ff;
+    }
+    .validator-card .tps {
+      font-weight: 700;
+      font-size: 2.2rem;
+      color: #7eff7e;
+      margin-bottom: 0.5rem;
+    }
+    .validator-card .status {
+      margin-top: 0.6rem;
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: #a0c4ffbb;
+    }
+    .status.online {
+      color: #7eff7e;
+    }
+    .status.offline {
+      color: #ff7e7e;
+    }
+    .validator-card .description {
+      margin-top: 0.5rem;
+      font-size: 1.05rem;
+      color: #a0c4ffbb;
+    }
+    .stake-btn {
+      margin-top: 1.2rem;
+      background: #3385ff;
+      color: #001f4d;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7rem 1.5rem;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px #3385ff44;
+    }
+    .stake-btn:hover, .stake-btn:focus {
+      background: #66b2ff;
+      outline: 2px solid #66b2ff;
+      outline-offset: 2px;
+    }
+    .validator-card .uptime-bar {
+      margin-top: 0.7rem;
+      width: 100%;
+      height: 10px;
+      background: #a0c4ff33;
+      border-radius: 5px;
+      overflow: hidden;
+      position: relative;
+    }
+    .validator-card .uptime-bar-inner {
+      height: 100%;
+      background: linear-gradient(90deg, #7eff7e 0%, #66b2ff 100%);
+      border-radius: 5px;
+      transition: width 0.5s;
+    }
+    .validator-card .commission {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      color: #ffb366;
+      font-weight: 600;
+    }
+    .validator-card .latency {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      color: #a8d0ff;
+      font-weight: 600;
+    }
+    .validator-card .details-link {
+      margin-top: 0.7rem;
+      font-size: 0.95rem;
+      color: #99c9ff;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .validator-card .details-link:hover {
+      color: #66b2ff;
+    }
+    .modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: #1e293b;
+      border-radius: 16px;
+      padding: 2rem 2.5rem;
+      color: #d0e8ff;
+      max-width: 400px;
+      box-shadow: 0 0 32px #3385ffcc;
+      position: relative;
+      animation: fadeIn 0.7s;
+    }
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: #3385ff;
+      color: #001f4d;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .modal-close:hover {
+      background: #66b2ff;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem 0;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: #a0c4ffbb;
+      background: rgba(0, 31, 77, 0.8);
+      letter-spacing: 0.08em;
+      margin-top: 2rem;
+    }
+    @media (max-width: 650px) {
+      header {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem 1.5rem;
+      }
+      main {
+        padding: 2rem 1rem;
+      }
+      .validators-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="19" cy="19" r="18" stroke="#3385ff" stroke-width="2" fill="#0047ab"/>
+        <path d="M19 8L25 19H13L19 8Z" fill="#a8d0ff"/>
+        <circle cx="19" cy="25" r="4" fill="#66b2ff"/>
+      </svg>
+      ZYRA
+    </div>
+    <nav>
+      <a href="index.html">Dashboard</a>
+      <a href="explorer.html">Explorer</a>
+      <a href="validators.html">Validators</a>
+      <a href="governance.html">Governance</a>
+      <a href="launchpad.html">Launchpad</a>
+      <a href="nfts.html">NFTs</a>
+      <a href="docs.html">Docs</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Zyra Blockchain Validators</h1>
+    <div class="validators-grid" id="validatorsGrid">
+      <!-- Validator cards will be rendered here -->
+    </div>
+  </main>
+  <footer>
+    © 2025 Zyra Blockchain. All rights reserved.
+  </footer>
+  <script>
+    // Simulate 5 validator nodes with advanced live stats and TPS always above 50,000
+    const validators = [
+      { id: 1, name: 'Zyra-Node-1', tps: 50234, online: true, latency: 80, commission: "5%", uptime: "99.9%" },
+      { id: 2, name: 'Zyra-Node-2', tps: 50412, online: true, latency: 90, commission: "4.5%", uptime: "99.8%" },
+      { id: 3, name: 'Zyra-Node-3', tps: 50321, online: true, latency: 85, commission: "6%", uptime: "99.7%" },
+      { id: 4, name: 'Zyra-Node-4', tps: 50567, online: true, latency: 95, commission: "5.2%", uptime: "99.9%" },
+      { id: 5, name: 'Zyra-Node-5', tps: 50678, online: true, latency: 100, commission: "4.8%", uptime: "99.6%" }
+    ];
+
+    function randomizeValidatorStats() {
+      validators.forEach(node => {
+        node.tps = Math.floor(Math.random() * 1000) + 50000; // TPS: 50,000-51,000+
+        node.latency = Math.floor(Math.random() * 21) + 80; // Latency: 80-100 ms
+        node.online = Math.random() > 0.03; // 97% uptime
+        node.uptime = (99.5 + Math.random() * 0.5).toFixed(2) + "%";
+      });
+    }
+
+    function renderValidators() {
+      const grid = document.getElementById('validatorsGrid');
+      grid.innerHTML = '';
+      validators.forEach(node => {
+        const card = document.createElement('div');
+        card.className = 'validator-card';
+        card.innerHTML = `
+          <h3>${node.name}</h3>
+          <div class="tps">${node.online ? node.tps.toLocaleString() : '--'} TPS</div>
+          <div class="status ${node.online ? 'online' : 'offline'}">${node.online ? 'Online' : 'Offline'}</div>
+          <div class="description">Latency: ${node.online ? node.latency + ' ms' : '--'}</div>
+          <div class="description">Commission: ${node.commission}</div>
+          <div class="description">Uptime: ${node.uptime}</div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Initial render
+    renderValidators();
+
+    // Live update every 4 seconds
+    setInterval(() => {
+      randomizeValidatorStats();
+      renderValidators();
+    }, 4000);
+  </script>
+</body>
+</html>

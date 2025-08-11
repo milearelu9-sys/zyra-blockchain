@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zyra Blockchain NFTs</title>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0047ab 0%, #001f4d 100%);
+      color: #d0e8ff;
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 1rem 3rem;
+      background: rgba(0, 71, 171, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: #a8d0ff;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    nav {
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav a {
+      font-weight: 600;
+      font-size: 1rem;
+      color: #a8d0ff;
+      text-decoration: none;
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+
+    nav a:hover {
+      background-color: #3385ffcc;
+      color: #001f4d;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      background: rgba(30, 60, 130, 0.7);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 0 20px #3399ffbb;
+    }
+
+    h1 {
+      color: #a8d0ff;
+      font-size: 2.2rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+    }
+
+    .nft-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.6rem;
+      margin-bottom: 2rem;
+    }
+
+    .nft-card {
+      background: rgba(50, 100, 255, 0.15);
+      border-radius: 10px;
+      padding: 1.5rem 1.8rem;
+      box-shadow: 0 2px 8px #3385ff44;
+      color: #cce4ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: box-shadow 0.3s ease;
+      cursor: default;
+    }
+
+    .nft-card:hover {
+      box-shadow: 0 0 25px #66b2ffcc;
+    }
+
+    .nft-card img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      background: #e0f0ff;
+    }
+
+    .nft-card h3 {
+      margin: 0 0 0.5rem 0;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #66b2ff;
+      text-align: center;
+    }
+
+    .nft-card .details {
+      font-size: 0.98rem;
+      color: #a0c4ffbb;
+      margin-bottom: 0.7rem;
+      text-align: center;
+    }
+
+    .nft-card button {
+      background: #1e3c82;
+      color: #a8d0ff;
+      border: 1.5px solid #3385ff;
+      border-radius: 8px;
+      padding: 0.6rem 1.2rem;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      margin-top: 0.5rem;
+    }
+
+    .nft-card button:hover {
+      background-color: #3385ff;
+      color: #001f4d;
+    }
+
+    .mint-section {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .mint-section input, .mint-section textarea {
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      margin: 0.3rem 0.5rem;
+      width: 260px;
+      background: #e0f0ff;
+      color: #0047ab;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .mint-section button {
+      background: #1e3c82;
+      color: #a8d0ff;
+      border: 1.5px solid #3385ff;
+      border-radius: 8px;
+      padding: 0.6rem 1.2rem;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      margin-top: 0.7rem;
+    }
+
+    .mint-section button:hover {
+      background-color: #3385ff;
+      color: #001f4d;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem 0;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: #a0c4ffbb;
+      background: rgba(0, 31, 77, 0.8);
+      letter-spacing: 0.08em;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">ZYRA</div>
+    <nav>
+      <a href="index.html">Dashboard</a>
+      <a href="explorer.html">Explorer</a>
+      <a href="validators.html">Validators</a>
+      <a href="governance.html">Governance</a>
+      <a href="launchpad.html">Launchpad</a>
+      <a href="nfts.html">NFTs</a>
+      <a href="docs.html">Docs</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Zyra Blockchain NFTs</h1>
+    <div class="mint-section">
+      <h2>Mint New NFT</h2>
+      <input type="text" id="nftName" placeholder="NFT Name" />
+      <textarea id="nftDesc" placeholder="NFT Description"></textarea>
+      <input type="text" id="nftImg" placeholder="Image URL" />
+      <input type="text" id="nftOwner" placeholder="Owner Address (optional)" />
+      <button id="mintBtn">Mint NFT</button>
+      <div id="mintStatus" style="margin-top:0.7rem;color:#7eff7e;"></div>
+    </div>
+    <div style="text-align:center;margin-bottom:2rem;">
+      <button id="refreshBtn" style="background:#3385ff;color:#fff;border:none;border-radius:8px;padding:0.5rem 1.2rem;font-weight:600;cursor:pointer;">Refresh Gallery</button>
+      <button id="batchMintBtn" style="background:#7eff7e;color:#001f4d;border:none;border-radius:8px;padding:0.5rem 1.2rem;font-weight:600;cursor:pointer;margin-left:1rem;">Batch Mint</button>
+      <button id="exportBtn" style="background:#ffb366;color:#001f4d;border:none;border-radius:8px;padding:0.5rem 1.2rem;font-weight:600;cursor:pointer;margin-left:1rem;">Export Gallery</button>
+    </div>
+    <div class="nft-gallery" id="nftGallery">
+      <!-- NFT cards will be rendered here -->
+    </div>
+    <div style="margin-top:2rem;">
+      <h2 style="color:#a8d0ff;text-align:center;">Live NFT Analytics</h2>
+      <canvas id="nftChart" height="120"></canvas>
+    </div>
+  </main>
+  <footer>
+    © 2025 Zyra Blockchain. All rights reserved.
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Example NFT data with owner and timestamp
+    let nfts = [
+      {
+        name: "Zyra Genesis",
+        desc: "The first NFT minted on Zyra.",
+        img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+        owner: "0xAb12...4Ef8",
+        timestamp: "2025-08-11 15:00"
+      },
+      {
+        name: "Validator Badge",
+        desc: "Awarded to top performing validators.",
+        img: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
+        owner: "0xCd34...1A7B",
+        timestamp: "2025-08-10 14:30"
+      }
+    ];
+
+    // Advanced: Transfer NFT, Burn NFT, Show history
+    function renderNFTs() {
+      const gallery = document.getElementById('nftGallery');
+      gallery.innerHTML = '';
+      nfts.forEach((nft, idx) => {
+        const card = document.createElement('div');
+        card.className = 'nft-card';
+        card.innerHTML = `
+          <img src="${nft.img}" alt="${nft.name}" />
+          <h3>${nft.name}</h3>
+          <div class="details">${nft.desc}</div>
+          <div class="details" style="font-size:0.9rem;color:#7eff7e;">Owner: ${nft.owner || "Unassigned"}</div>
+          <div class="details" style="font-size:0.85rem;color:#ffb366;">Minted: ${nft.timestamp || "--"}</div>
+          <button onclick="transferNFT(${idx})">Transfer</button>
+          <button onclick="burnNFT(${idx})" style="background:#ff7e7e;color:#fff;margin-top:0.5rem;">Burn</button>
+          <button onclick="showHistory(${idx})" style="background:#3385ff;color:#fff;margin-top:0.5rem;">History</button>
+        `;
+        gallery.appendChild(card);
+      });
+    }
+
+    window.transferNFT = function(idx) {
+      const newOwner = prompt("Enter new owner address:");
+      if (newOwner) {
+        nfts[idx].owner = newOwner;
+        nfts[idx].timestamp = new Date().toISOString().slice(0,16).replace("T"," ");
+        renderNFTs();
+        updateNFTChart();
+        alert(`Transferred ${nfts[idx].name} to ${newOwner}!`);
+      }
+    };
+
+    window.burnNFT = function(idx) {
+      if (confirm(`Burn ${nfts[idx].name}? This cannot be undone.`)) {
+        nfts.splice(idx, 1);
+        renderNFTs();
+        updateNFTChart();
+        alert('NFT Burned!');
+      }
+    };
+
+    window.showHistory = function(idx) {
+      alert(`History for ${nfts[idx].name}:\nOwner: ${nfts[idx].owner}\nMinted: ${nfts[idx].timestamp}`);
+    };
+
+    document.getElementById('mintBtn').addEventListener('click', () => {
+      const name = document.getElementById('nftName').value.trim();
+      const desc = document.getElementById('nftDesc').value.trim();
+      const img = document.getElementById('nftImg').value.trim();
+      const owner = document.getElementById('nftOwner').value.trim() || "Unassigned";
+      const statusDiv = document.getElementById('mintStatus');
+      if (!name || !desc || !img) {
+        statusDiv.textContent = 'Please fill in all fields.';
+        statusDiv.style.color = "#ff7e7e";
+        return;
+      }
+      nfts.push({ name, desc, img, owner, timestamp: new Date().toISOString().slice(0,16).replace("T"," ") });
+      renderNFTs();
+      updateNFTChart();
+      document.getElementById('nftName').value = '';
+      document.getElementById('nftDesc').value = '';
+      document.getElementById('nftImg').value = '';
+      document.getElementById('nftOwner').value = '';
+      statusDiv.textContent = 'NFT Minted Successfully!';
+      statusDiv.style.color = "#7eff7e";
+      setTimeout(() => statusDiv.textContent = '', 2000);
+    });
+
+    document.getElementById('refreshBtn').addEventListener('click', () => {
+      renderNFTs();
+      updateNFTChart();
+    });
+
+    document.getElementById('batchMintBtn').addEventListener('click', () => {
+      for (let i = 1; i <= 5; i++) {
+        nfts.push({
+          name: `Batch NFT #${i}`,
+          desc: `Minted in batch operation.`,
+          img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+          owner: "0xBatchMint",
+          timestamp: new Date().toISOString().slice(0,16).replace("T"," ")
+        });
+      }
+      renderNFTs();
+      updateNFTChart();
+      alert('Batch NFTs Minted!');
+    });
+
+    document.getElementById('exportBtn').addEventListener('click', () => {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(nfts, null, 2));
+      const dlAnchor = document.createElement('a');
+      dlAnchor.setAttribute("href", dataStr);
+      dlAnchor.setAttribute("download", "zyra-nft-gallery.json");
+      dlAnchor.click();
+    });
+
+    // Advanced: Live NFT analytics chart
+    const ctx = document.getElementById('nftChart').getContext('2d');
+    const nftChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Total NFTs', 'Unique Owners'],
+        datasets: [{
+          data: [nfts.length, new Set(nfts.map(n => n.owner)).size],
+          backgroundColor: ['#3385ff', '#7eff7e']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: true } }
+      }
+    });
+
+    function updateNFTChart() {
+      nftChart.data.datasets[0].data = [nfts.length, new Set(nfts.map(n => n.owner)).size];
+      nftChart.update();
+    }
+
+    renderNFTs();
+    updateNFTChart();
+  </script>
+</body>
+</html>

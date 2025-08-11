@@ -1,0 +1,30 @@
+<nav class="quick-links" aria-label="Quick Links">
+  <strong>Quick Links:</strong>
+  <ul>
+    <li>
+      <a href="tokenomics.pdf" target="_blank" rel="noopener noreferrer">
+        Zyra Tokenomics Whitepaper
+      </a>
+    </li>
+    <li>
+      <a href="https://explorer.zyra.network" target="_blank" rel="noopener noreferrer">
+        Zyra Block Explorer
+      </a>
+    </li>
+    <li>
+      <a href="https://discord.gg/zyra" target="_blank" rel="noopener noreferrer">
+        Zyra Community Discord
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/zyra-network" target="_blank" rel="noopener noreferrer">
+        Zyra GitHub
+      </a>
+    </li>
+    <li>
+      <a href="https://docs.zyra.network" target="_blank" rel="noopener noreferrer">
+        Zyra Documentation
+      </a>
+    </li>
+  </ul>
+</nav>
