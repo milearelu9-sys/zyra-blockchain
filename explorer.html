@@ -22,6 +22,8 @@
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
+      box-shadow: 0 4px 16px #3385ff44;
+      border-bottom: 2px solid #3385ff44;
     }
     .logo {
       font-weight: 700;
@@ -32,6 +34,11 @@
       display: flex;
       align-items: center;
       gap: 0.7rem;
+      animation: logoPulse 2s infinite alternate;
+    }
+    @keyframes logoPulse {
+      from { filter: drop-shadow(0 0 0 #7eff7e); }
+      to { filter: drop-shadow(0 0 12px #7eff7e); }
     }
     nav {
       display: flex;
@@ -45,13 +52,36 @@
       text-decoration: none;
       padding: 0.3rem 0.5rem;
       border-radius: 4px;
-      transition: background-color 0.3s, color 0.3s;
+      transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+      box-shadow: 0 2px 8px #3385ff22;
     }
     nav a:hover, nav a:focus {
       background-color: #3385ffcc;
       color: #001f4d;
       outline: 2px solid #66b2ff;
       outline-offset: 2px;
+      box-shadow: 0 4px 16px #7eff7e44;
+      transform: scale(1.08);
+    }
+    .nav-btn {
+      background: linear-gradient(90deg,#3385ff,#7eff7e);
+      color: #001f4d;
+      border: none;
+      border-radius: 8px;
+      padding: 0.45rem 1.1rem;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      min-width: 120px;
+      box-shadow: 0 2px 8px #3385ff44;
+      transition: background 0.3s, color 0.3s, transform 0.2s;
+      margin-bottom: 0.5rem;
+      margin-right: 0.5rem;
+    }
+    .nav-btn:hover {
+      background: linear-gradient(90deg,#7eff7e,#3385ff);
+      color: #181f2a;
+      transform: scale(1.06);
     }
     main {
       max-width: 1000px;
@@ -60,6 +90,7 @@
       border-radius: 15px;
       padding: 2rem;
       box-shadow: 0 0 20px #3399ffbb;
+      animation: fadeIn 1s;
     }
     h1 {
       color: #a8d0ff;
@@ -68,6 +99,10 @@
       text-align: center;
       font-weight: 700;
       letter-spacing: 0.1em;
+      background: linear-gradient(90deg,#3385ff,#7eff7e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       animation: fadeIn 1s;
     }
     @keyframes fadeIn {
@@ -90,6 +125,7 @@
       background: #e0f0ff;
       color: #0047ab;
       transition: box-shadow 0.2s;
+      box-shadow: 0 2px 8px #3385ff22;
     }
     .search-bar input:focus {
       box-shadow: 0 0 0 2px #3385ff;
@@ -105,6 +141,7 @@
       font-size: 1rem;
       cursor: pointer;
       transition: background-color 0.3s, color 0.3s;
+      box-shadow: 0 2px 8px #3385ff22;
     }
     .search-bar button:hover, .search-bar button:focus {
       background-color: #3385ff;
@@ -123,6 +160,11 @@
       box-shadow: 0 2px 8px #3385ff44;
       color: #cce4ff;
       animation: fadeIn 0.7s;
+      transition: box-shadow 0.3s;
+    }
+    .result-card:hover {
+      box-shadow: 0 4px 16px #7eff7e44;
+      border: 1px solid #7eff7e;
     }
     .result-title {
       font-weight: 700;
@@ -172,6 +214,11 @@
       text-align: center;
       box-shadow: 0 2px 8px #3385ff44;
       font-weight: 600;
+      transition: box-shadow 0.3s;
+    }
+    .chain-card:hover {
+      box-shadow: 0 4px 16px #7eff7e44;
+      border: 1px solid #7eff7e;
     }
     .chain-card .chain-title {
       color: #66b2ff;
@@ -202,6 +249,113 @@
     .chain-card button:hover {
       background: #66b2ff;
     }
+    .nft-gallery {
+      margin-top:2rem;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:1.2rem;
+    }
+    .nft-gallery-card {
+      background:#1e293b;
+      border-radius:12px;
+      padding:1rem;
+      text-align:center;
+      color:#d0e8ff;
+      box-shadow:0 2px 8px #3385ff44;
+      transition: box-shadow 0.3s;
+      animation: fadeIn 1.2s;
+    }
+    .nft-gallery-card:hover {
+      box-shadow: 0 4px 16px #7eff7e44;
+      border: 1px solid #7eff7e;
+    }
+    .nft-gallery-card img {
+      width:100%;
+      height:120px;
+      object-fit:cover;
+      border-radius:8px;
+      margin-bottom:0.7rem;
+      transition: transform 0.3s;
+    }
+    .nft-gallery-card img:hover {
+      transform: scale(1.08);
+    }
+    .nft-gallery-card .nft-name {
+      font-weight:700;
+      color:#66b2ff;
+    }
+    .nft-gallery-card .nft-owner {
+      font-size:0.85rem;
+      color:#7eff7e;
+      margin-top:0.5rem;
+    }
+    .governance-section {
+      margin-top:2rem;
+    }
+    .governance-card {
+      background:#1e293b;
+      border-radius:10px;
+      padding:1rem;
+      margin-bottom:1rem;
+      color:#d0e8ff;
+      box-shadow:0 2px 8px #3385ff44;
+      transition: box-shadow 0.3s;
+      animation: fadeIn 1.2s;
+    }
+    .governance-card:hover {
+      box-shadow: 0 4px 16px #7eff7e44;
+      border: 1px solid #7eff7e;
+    }
+    .governance-card .gov-title {
+      font-weight:700;
+      color:#66b2ff;
+    }
+    .governance-card .gov-desc {
+      font-size:0.95rem;
+    }
+    .governance-card .gov-votes {
+      margin-top:0.5rem;
+      font-size:0.85rem;
+      color:#7eff7e;
+    }
+    .governance-card .gov-actions button {
+      margin-right:1rem;
+      background: linear-gradient(90deg,#3385ff,#7eff7e);
+      color: #001f4d;
+      border: none;
+      border-radius: 8px;
+      padding: 0.45rem 1.1rem;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      min-width: 90px;
+      box-shadow: 0 2px 8px #3385ff44;
+      transition: background 0.3s, color 0.3s, transform 0.2s;
+    }
+    .governance-card .gov-actions button:hover {
+      background: linear-gradient(90deg,#7eff7e,#3385ff);
+      color: #181f2a;
+      transform: scale(1.06);
+    }
+    .explorer-switch-bar {
+      margin:2rem 0;
+      text-align:center;
+    }
+    .explorer-switch-bar button {
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1.2rem;
+      margin-right: 0.5rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #3385ff44;
+      transition: background 0.3s, color 0.3s, transform 0.2s;
+    }
+    .explorer-switch-bar button:hover {
+      transform: scale(1.08);
+      filter: brightness(1.2);
+    }
     footer {
       text-align: center;
       padding: 1rem 0;
@@ -211,6 +365,63 @@
       background: rgba(0, 31, 77, 0.8);
       letter-spacing: 0.08em;
       margin-top: 2rem;
+    }
+    .network-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .stat-card {
+      background: rgba(30, 60, 130, 0.7);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 16px rgba(51, 133, 255, 0.2);
+      transition: transform 0.3s;
+      border: 1px solid rgba(51, 133, 255, 0.3);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      border-color: #7eff7e;
+    }
+
+    .stat-title {
+      color: #a8d0ff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #7eff7e;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, #3385ff, #7eff7e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-chart {
+      height: 60px;
+      margin-top: 1rem;
+    }
+
+    .stat-progress {
+      background: rgba(51, 133, 255, 0.2);
+      height: 8px;
+      border-radius: 4px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #3385ff, #7eff7e);
+      width: 0%;
+      transition: width 0.3s ease;
     }
     @media (max-width: 650px) {
       header {
@@ -229,6 +440,81 @@
         gap: 1rem;
       }
     }
+
+    /* New styles for explorer layout */
+    .explorer-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .explorer-switch-panel {
+      position: sticky;
+      top: 2rem;
+      background: rgba(30, 60, 130, 0.7);
+      border-radius: 12px;
+      padding: 1.5rem;
+      height: fit-content;
+      border: 1px solid rgba(51, 133, 255, 0.3);
+    }
+
+    .explorer-switch-panel h3 {
+      color: #a8d0ff;
+      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
+      text-align: center;
+      background: linear-gradient(90deg, #3385ff, #7eff7e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .explorer-switch-panel button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s;
+    }
+
+    .explorer-switch-panel button:hover {
+      transform: translateX(5px);
+      box-shadow: 0 4px 12px rgba(51, 133, 255, 0.4);
+    }
+
+    .explorer-switch-panel button img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .explorer-main-content {
+      flex: 1;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .explorer-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .explorer-switch-panel {
+        position: relative;
+        top: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.8rem;
+      }
+
+      .explorer-switch-panel button {
+        margin-bottom: 0;
+      }
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -242,18 +528,21 @@
       </svg>
       ZYRA
     </div>
+    <!-- Update the navigation section -->
     <nav aria-label="Main Navigation">
-      <a href="index.html">Dashboard</a>
-      <a href="explorer.html">Explorer</a>
-      <a href="validators.html">Validators</a>
-      <a href="governance.html">Governance</a>
-      <a href="launchpad.html">Launchpad</a>
-      <a href="nfts.html">NFTs</a>
-      <a href="docs.html">Docs</a>
+      <button class="nav-btn" onclick="window.location.href='index.html'">Dashboard</button>
+      <button class="nav-btn" onclick="window.location.href='explorer.html'">Explorer</button>
+      <button class="nav-btn" onclick="window.location.href='validators.html'">Validators</button>
+      <button class="nav-btn" onclick="window.location.href='governance.html'">Governance</button>
+      <button class="nav-btn" onclick="window.location.href='launchpad.html'">Launchpad</button>
+      <button class="nav-btn" onclick="window.location.href='nfts.html'">NFTs</button>
+      <button class="nav-btn" onclick="window.location.href='docs.html'">Docs</button>
+      <button class="nav-btn" onclick="window.location.href='exchange.html'">Exchange</button>
     </nav>
   </header>
   <main>
     <h1>Zyra Blockchain Explorer</h1>
+    <div id="livePrices" style="text-align:center;margin-bottom:2rem;font-size:1.15rem;"></div>
     <div class="search-bar">
       <input type="text" id="explorerSearch" placeholder="Search block, transaction, address, NFT, or validator..." aria-label="Search" autocomplete="off" />
       <button id="searchBtn" aria-label="Search">Search</button>
@@ -273,28 +562,85 @@
         <input type="checkbox" id="searchContracts" /> Smart Contracts
       </label>
     </div>
-    <div class="multi-chain-bar" id="multiChainBar"></div>
+    <!-- Replace the existing multiChainBar section with network stats -->
+    <div class="network-stats">
+      <div class="stat-card">
+          <div class="stat-title">TPS</div>
+          <div class="stat-value" id="tpsValue">0</div>
+          <div class="stat-chart">
+              <canvas id="tpsChart"></canvas>
+          </div>
+      </div>
+      <div class="stat-card">
+          <div class="stat-title">Active Nodes</div>
+          <div class="stat-value" id="nodesValue">0</div>
+          <div class="stat-chart">
+              <canvas id="nodesChart"></canvas>
+          </div>
+      </div>
+      <div class="stat-card">
+          <div class="stat-title">Block Time</div>
+          <div class="stat-value" id="blockTimeValue">0s</div>
+          <div class="stat-chart">
+              <canvas id="blockTimeChart"></canvas>
+          </div>
+      </div>
+      <div class="stat-card">
+          <div class="stat-title">Network Load</div>
+          <div class="stat-value" id="networkLoadValue">0%</div>
+          <div class="stat-progress">
+              <div id="networkLoadBar" class="progress-bar"></div>
+          </div>
+      </div>
+    </div>
     <div class="results" id="results"></div>
     <div class="analytics-section">
       <h2 style="text-align:center;color:#a8d0ff;">Live Analytics</h2>
       <canvas id="analyticsChart" height="120"></canvas>
       <div id="nodeCount" style="text-align:center;margin-top:1rem;font-size:1.1rem;color:#7eff7e;"></div>
     </div>
-    <div class="nft-gallery" id="nftGallery" style="margin-top:2rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.2rem;"></div>
-    <div class="governance-section" id="governancePanel" style="margin-top:2rem;"></div>
-    <div class="explorer-switch-bar" style="margin:2rem 0;text-align:center;">
-      <span style="font-weight:600;color:#a8d0ff;margin-right:1rem;">Switch Explorer:</span>
-      <button onclick="window.open('https://www.blockchain.com/explorer', '_blank')" style="background:#f7931a;color:#fff;border:none;border-radius:8px;padding:0.5rem 1.2rem;font-weight:600;cursor:pointer;margin-right:0.5rem;">BTC</button>
-      <button onclick="window.open('https://explorer.solana.com/', '_blank')" style="background:#00ffa3;color:#001f4d;border:none;border-radius:8px;padding:0.5rem 1.2rem;font-weight:600;cursor:pointer;margin-right:0.5rem;">SOL</button>
-      <button onclick="window.open('https://xrpscan.com/', '_blank')" style="background:#346aa9;color:#fff;border:none;border-radius:8px;padding:0.5rem 1.2rem;font-weight:600;cursor:pointer;margin-right:0.5rem;">XRP</button>
-      <button onclick="window.open('https://etherscan.io/', '_blank')" style="background:#627eea;color:#fff;border:none;border-radius:8px;padding:0.5rem 1.2rem;font-weight:600;cursor:pointer;margin-right:0.5rem;">ETH</button>
-      <button onclick="window.open('https://explorer.kaspa.org/', '_blank')" style="background:#00bcd4;color:#fff;border:none;border-radius:8px;padding:0.5rem 1.2rem;font-weight:600;cursor:pointer;margin-right:0.5rem;">Kaspa</button>
-      <button onclick="window.open('https://zyra.network/explorer', '_blank')" style="background:#3385ff;color:#fff;border:none;border-radius:8px;padding:0.5rem 1.2rem;font-weight:600;cursor:pointer;">ZYRA</button>
+    <div class="nft-gallery" id="nftGallery"></div>
+    <div class="governance-section" id="governancePanel"></div>
+    <!-- Replace the explorer-layout section with this -->
+    <div class="explorer-layout">
+      <!-- Left side explorer switch panel -->
+      <div class="explorer-switch-panel">
+          <h3>Other Explorers</h3>
+          <button class="nav-btn explorer-btn" onclick="window.open('https://www.blockchain.com/explorer', '_blank')">
+              Bitcoin Explorer
+          </button>
+          <button class="nav-btn explorer-btn" onclick="window.open('https://explorer.solana.com/', '_blank')">
+              Solana Explorer
+          </button>
+          <button class="nav-btn explorer-btn" onclick="window.open('https://xrpscan.com/', '_blank')">
+              XRP Explorer
+          </button>
+          <button class="nav-btn explorer-btn" onclick="window.open('https://etherscan.io/', '_blank')">
+              Ethereum Explorer
+          </button>
+          <button class="nav-btn explorer-btn" onclick="window.open('https://explorer.kaspa.org/', '_blank')">
+              Kaspa Explorer
+          </button>
+          <button class="nav-btn explorer-btn" onclick="window.open('https://zyra.network/explorer', '_blank')">
+              ZYRA Explorer
+          </button>
+      </div>
+
+      <!-- Main content - Remove duplicate buttons -->
+      <div class="explorer-main-content">
+          <!-- Add live transaction feed -->
+          <div class="live-transactions">
+            <h2>Live Transactions</h2>
+            <div class="transaction-feed" id="transactionFeed"></div>
+          </div>
+      </div>
     </div>
   </main>
   <footer>
     © 2025 Zyra Blockchain. All rights reserved.
   </footer>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
   <script>
     // --- Multi-chain wallet integration (Ethereum & Solana) ---
     const multiChainBar = document.getElementById('multiChainBar');
@@ -410,12 +756,11 @@
         nftGallery.innerHTML = '';
         nfts.forEach(nft => {
           const card = document.createElement('div');
-          card.style = "background:#1e293b;border-radius:12px;padding:1rem;text-align:center;color:#d0e8ff;box-shadow:0 2px 8px #3385ff44;";
+          card.className = "nft-gallery-card";
           card.innerHTML = `
-            <img src="${nft.image}" alt="${nft.name}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;margin-bottom:0.7rem;">
-            <div style="font-weight:700;">${nft.name}</div>
-            <div style="font-size:0.95rem;">${nft.description || ''}</div>
-            <div style="font-size:0.85rem;color:#66b2ff;margin-top:0.5rem;">Owner: ${nft.owner.slice(0,8)}...</div>
+            <img src="${nft.image}" alt="${nft.name}">
+            <div class="nft-name">${nft.name}</div>
+            <div class="nft-owner">Owner: ${nft.owner.slice(0,8)}...</div>
           `;
           nftGallery.appendChild(card);
         });
@@ -433,15 +778,15 @@
       panel.innerHTML = '';
       proposals.forEach(p => {
         const div = document.createElement('div');
-        div.style = "background:#1e293b;border-radius:10px;padding:1rem;margin-bottom:1rem;color:#d0e8ff;box-shadow:0 2px 8px #3385ff44;";
+        div.className = "governance-card";
         div.innerHTML = `
-          <div style="font-weight:700;">${p.title}</div>
-          <div style="font-size:0.95rem;">${p.description}</div>
-          <div style="margin-top:0.7rem;">
-            <button onclick="voteProposal('${p.id}','yes')" style="margin-right:1rem;">Vote Yes</button>
+          <div class="gov-title">${p.title}</div>
+          <div class="gov-desc">${p.description}</div>
+          <div class="gov-actions" style="margin-top:0.7rem;">
+            <button onclick="voteProposal('${p.id}','yes')">Vote Yes</button>
             <button onclick="voteProposal('${p.id}','no')">Vote No</button>
           </div>
-          <div style="margin-top:0.5rem;font-size:0.85rem;color:#66b2ff;">Yes: ${p.votes_yes} | No: ${p.votes_no}</div>
+          <div class="gov-votes">Yes: ${p.votes_yes} | No: ${p.votes_no}</div>
         `;
         panel.appendChild(div);
       });
@@ -557,7 +902,183 @@
       }
       resultsDiv.innerHTML = results.join('');
     });
+    // If you have an exchange logic or UI, restrict it to:
+    // - Only allow Zyra → Other crypto
+    // - Only allow Other crypto → Zyra
+    // (No direct swaps between non-Zyra cryptos)
+
+    // Example for exchange.html (not shown here):
+    // - In the "From" dropdown, if Zyra is selected, allow any "To" except Zyra.
+    // - If any other crypto is selected as "From", only allow "To" = Zyra.
+    // - Disable or hide other combinations.
+
+    // If you have exchange logic in JS, add checks like:
+    /*
+    function updateExchangeOptions() {
+      const from = fromSelect.value;
+      const to = toSelect.value;
+      // If from is ZYRA, allow any to except ZYRA
+      if (from === 'ZYRA') {
+        // populate 'to' with all except ZYRA
+      } else {
+        // Only allow 'to' to be ZYRA
+      }
+    }
+    */
+    // --- Live Prices from CoinGecko ---
+    async function showLivePrices() {
+      const coins = [
+        { id: "bitcoin", symbol: "BTC" },
+        { id: "ethereum", symbol: "ETH" },
+        { id: "solana", symbol: "SOL" },
+        { id: "kaspa", symbol: "KAS" },
+        { id: "ripple", symbol: "XRP" },
+        { id: "zyra", symbol: "ZYRA" } // If Zyra is listed on CoinGecko
+      ];
+      const ids = coins.map(c => c.id).join(",");
+      try {
+        const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`);
+        const data = await res.json();
+        let html = `<strong>Live Prices (USD):</strong> `;
+        coins.forEach(c => {
+          if (data[c.id] && data[c.id].usd !== undefined) {
+            html += `<span style="margin:0 12px;"><b>${c.symbol}</b>: $${data[c.id].usd.toLocaleString()}</span>`;
+          }
+        });
+        document.getElementById('livePrices').innerHTML = html;
+      } catch (e) {
+        document.getElementById('livePrices').innerHTML = "Live prices unavailable.";
+      }
+    }
+    showLivePrices();
+    setInterval(showLivePrices, 60000); // Update every 60 seconds
+
+    // Initialize charts
+    const chartConfig = {
+        type: 'line',
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { display: false },
+                y: { display: false }
+            },
+            elements: {
+                line: {
+                    tension: 0.4,
+                    borderColor: '#7eff7e',
+                    borderWidth: 2
+                },
+                point: {
+                    radius: 0
+                }
+            }
+        }
+    };
+
+    const tpsChart = new Chart(document.getElementById('tpsChart').getContext('2d'), {
+        ...chartConfig,
+        data: { labels: [], datasets: [{ data: [] }] }
+    });
+
+    const nodesChart = new Chart(document.getElementById('nodesChart').getContext('2d'), {
+        ...chartConfig,
+        data: { labels: [], datasets: [{ data: [] }] }
+    });
+
+    const blockTimeChart = new Chart(document.getElementById('blockTimeChart').getContext('2d'), {
+        ...chartConfig,
+        data: { labels: [], datasets: [{ data: [] }] }
+    });
+
+    // WebSocket connection for live stats
+            document.getElementById('tpsValue').textContent = data.tps.toFixed(1);
+            document.getElementById('nodesValue').textContent = data.nodes;
+            document.getElementById('blockTimeValue').textContent = data.blockTime.toFixed(2) + 's';
+            document.getElementById('networkLoadValue').textContent = data.networkLoad + '%';
+            document.getElementById('networkLoadBar').style.width = data.networkLoad + '%';
+
+            // Update charts
+            updateChart(tpsChart, data.tps);
+            updateChart(nodesChart, data.nodes);
+            updateChart(blockTimeChart, data.blockTime);
+        } catch(e) {
+            console.error('Error parsing network stats:', e);
+        }
+    };
+
+    function updateChart(chart, value) {
+        const maxDataPoints = 20;
+        const labels = [...Array(maxDataPoints)].map((_, i) => i);
+        
+        chart.data.labels = labels;
+        chart.data.datasets[0].data.push(value);
+        
+        if (chart.data.datasets[0].data.length > maxDataPoints) {
+            chart.data.datasets[0].data.shift();
+        }
+        
+        chart.update('none'); // Use 'none' mode for better performance
+    }
+
+    // Reconnection logic
+    ws.onclose = function() {
+        setTimeout(() => {
+            window.location.reload();
+        }, 5000);
+    };
+
+    // --- Live Transactions Feed ---
+    const transactionFeed = document.getElementById('transactionFeed');
+    const txWs = new WebSocket('wss://api.zyra.network/transactions');
+
+    txWs.onmessage = function(event) {
+        try {
+            const tx = JSON.parse(event.data);
+            const txElement = document.createElement('div');
+            txElement.className = 'transaction-item';
+            
+            txElement.innerHTML = `
+                <div class="transaction-hash">
+                    ${tx.hash.slice(0, 10)}...${tx.hash.slice(-8)}
+                </div>
+                <div class="transaction-details">
+                    <span>From: ${shortenAddress(tx.from)}</span>
+                    <span>→</span>
+                    <span>To: ${shortenAddress(tx.to)}</span>
+                    <span class="transaction-amount">${formatAmount(tx.amount)} ZYRA</span>
+                </div>
+                <div class="transaction-time">
+                    ${new Date().toLocaleTimeString()}
+                </div>
+            `;
+
+            transactionFeed.insertBefore(txElement, transactionFeed.firstChild);
+
+            // Keep only last 50 transactions
+            if (transactionFeed.children.length > 50) {
+                transactionFeed.removeChild(transactionFeed.lastChild);
+            }
+        } catch(e) {
+            console.error('Error parsing transaction:', e);
+        }
+    };
+
+    function shortenAddress(address) {
+        return `${address.slice(0, 6)}...${address.slice(-4)}`;
+    }
+
+    function formatAmount(amount) {
+        return parseFloat(amount).toFixed(6);
+    }
+
+    // Add reconnection logic
+    txWs.onclose = function() {
+        setTimeout(() => {
+            location.reload();
+        }, 5000);
+    };
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 </body>
 </html>
