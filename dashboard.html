@@ -5,33 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Zyra Blockchain Dashboard</title>
   <style>
+    /* Ultra advanced, timeless dashboard styles with light green shadow */
     body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0047ab 0%, #001f4d 100%);
-      color: #d0e8ff;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(160deg, #0a0a0a 0%, #0047ab 100%);
+      color: #e5e5e5;
       margin: 0;
       min-height: 100vh;
+      transition: background 0.5s;
+      /* Removed global text-shadow */
+    }
+    /* Remove global text-shadow from all elements */
+    h1, h2, h3, h4, h5, h6, p, span, div, a, th, td, label, button, input, .stat-value, .stat-label, .description {
+      text-shadow: none !important;
+    }
+    /* Only Zyra Dashboard title gets dark green */
+    .dashboard-title, main h1 {
+      color: #0a4d1a !important; /* dark green */
+      background: none !important;
+      -webkit-background-clip: unset !important;
+      -webkit-text-fill-color: unset !important;
+      background-clip: unset !important;
+      text-align: center;
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin-bottom: 2rem;
+      animation: fadeIn 1s;
     }
     header {
-      padding: 1rem 3rem;
-      background: rgba(0, 71, 171, 0.9);
+      padding: 1.2rem 3rem;
+      background: rgba(0, 71, 171, 0.92);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      box-shadow: 0 4px 16px #3385ff44;
+      border-bottom: 2px solid #3385ff44;
     }
     .logo {
       font-weight: 700;
-      font-size: 1.6rem;
+      font-size: 1.7rem;
       color: #a8d0ff;
       letter-spacing: 0.15em;
       text-transform: uppercase;
       display: flex;
       align-items: center;
       gap: 0.7rem;
+      animation: logoPulse 2s infinite alternate;
+    }
+    @keyframes logoPulse {
+      from { filter: drop-shadow(0 0 0 #7eff7e); }
+      to { filter: drop-shadow(0 0 12px #7eff7e); }
     }
     nav {
       display: flex;
       gap: 2rem;
+      flex-wrap: wrap;
     }
     nav a {
       font-weight: 600;
@@ -40,38 +69,78 @@
       text-decoration: none;
       padding: 0.3rem 0.5rem;
       border-radius: 4px;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+      box-shadow: 0 2px 8px #3385ff22;
+      margin-bottom: 0.5rem;
+      margin-right: 0.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
     }
     nav a:hover {
       background-color: #3385ffcc;
       color: #001f4d;
+      outline: 2px solid #66b2ff;
+      outline-offset: 2px;
+      box-shadow: 0 4px 16px #7eff7e44;
+      transform: scale(1.08);
     }
     .wallet-container {
       display: flex;
       gap: 1rem;
       align-items: center;
     }
-    button {
-      background: #1e3c82;
-      color: #a8d0ff;
-      border: 1.5px solid #3385ff;
+    #connectWalletBtn {
+      background: linear-gradient(90deg, #3385ff, #7eff7e);
+      color: #001f4d;
+      border: none;
+      border-radius: 8px;
+      padding: 0.8rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    #connectWalletBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(51, 133, 255, 0.4);
+    }
+    #connectWalletBtn:disabled {
+      background: linear-gradient(90deg, #3385ff88, #7eff7e88);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    #exchangePageBtn, #donateBtnBottom {
+      background: linear-gradient(90deg,#3385ff,#7eff7e);
+      color: #001f4d;
+      border: none;
       border-radius: 8px;
       padding: 0.45rem 1.1rem;
-      font-weight: 600;
-      font-size: 0.9rem;
+      font-weight: 700;
+      font-size: 1rem;
       cursor: pointer;
-      transition: background-color 0.3s ease, color 0.3s ease;
       min-width: 120px;
+      box-shadow: 0 2px 8px #3385ff44;
+      transition: background 0.3s, color 0.3s, transform 0.2s;
+      margin-bottom: 0.5rem;
+      margin-right: 0.5rem;
     }
-    button:hover {
-      background-color: #3385ff;
-      color: #001f4d;
+    #exchangePageBtn:hover, #donateBtnBottom:hover {
+      background: linear-gradient(90deg,#7eff7e,#3385ff);
+      color: #181f2a;
+      transform: scale(1.06);
     }
-    button:disabled {
+    #donateBtnBottom:disabled {
       background-color: #555f7a;
       color: #9cb4ff99;
-      border-color: #666f8c;
       cursor: not-allowed;
+      border-color: #666f8c;
+    }
+    #walletDetails {
+      background: rgba(51, 133, 255, 0.1);
+      padding: 0.8rem 1.2rem;
+      border-radius: 8px;
+      border: 1px solid rgba(51, 133, 255, 0.2);
     }
     main {
       flex-grow: 1;
@@ -79,19 +148,16 @@
       max-width: 1200px;
       margin: 0 auto 3rem auto;
     }
-    main h1 {
-      color: #a8d0ff;
-      font-size: 3rem;
-      margin-bottom: 2rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-align: center;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-30px);}
+      to { opacity: 1; transform: translateY(0);}
     }
-    .overall-stats {
+    .overall-stats, .stats-grid {
       display: flex;
       justify-content: center;
       gap: 2rem;
       margin-bottom: 3rem;
+      flex-wrap: wrap;
     }
     .stat-card {
       background: rgba(50, 100, 255, 0.15);
@@ -103,6 +169,11 @@
       width: 180px;
       cursor: default;
       transition: transform 0.3s ease;
+      animation: fadeInCard 1.2s;
+    }
+    @keyframes fadeInCard {
+      from { opacity: 0; transform: translateY(30px);}
+      to { opacity: 1; transform: translateY(0);}
     }
     .stat-card:hover {
       transform: translateY(-6px);
@@ -115,12 +186,12 @@
       color: #66b2ff;
       letter-spacing: 0.05em;
     }
-    .stat-card .value {
+    .stat-card .value, .stat-value {
       font-weight: 700;
       font-size: 2.4rem;
       color: #e0f0ff;
     }
-    .stat-card .description {
+    .stat-card .description, .stat-label {
       margin-top: 0.5rem;
       font-weight: 400;
       font-size: 0.95rem;
@@ -134,91 +205,6 @@
       padding: 1.5rem;
       box-shadow: 0 0 12px #3399ff99;
       color: #d0e8ff;
-    }
-    .nodes-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.6rem;
-      margin-bottom: 3rem;
-    }
-    .node-card {
-      background: rgba(30, 60, 130, 0.7);
-      border-radius: 15px;
-      padding: 1.6rem 1.8rem;
-      box-shadow: 0 0 12px #3399ff99;
-      color: #d0e8ff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      transition: box-shadow 0.3s ease;
-      cursor: default;
-    }
-    .node-card:hover {
-      box-shadow: 0 0 25px #66b2ffcc;
-    }
-    .node-card h3 {
-      margin: 0 0 0.5rem 0;
-      font-weight: 700;
-      font-size: 1.3rem;
-      color: #66b2ff;
-    }
-    .node-card .tps {
-      font-weight: 700;
-      font-size: 2rem;
-      color: #cce4ff;
-    }
-    .node-card .status {
-      margin-top: 0.6rem;
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: #a0c4ffbb;
-    }
-    .status.online {
-      color: #7eff7e;
-    }
-    .status.offline {
-      color: #ff7e7e;
-    }
-    .tx-dashboard {
-      background: rgba(30, 60, 130, 0.7);
-      border-radius: 15px;
-      padding: 1.6rem 2rem;
-      box-shadow: 0 0 20px #3399ffbb;
-      color: #d0e8ff;
-      max-height: 360px;
-      overflow-y: auto;
-    }
-    .tx-dashboard h2 {
-      color: #66b2ff;
-      margin-bottom: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 0.65rem 0.8rem;
-      text-align: left;
-      font-size: 0.95rem;
-      border-bottom: 1px solid #3385ff44;
-      white-space: nowrap;
-    }
-    th {
-      color: #a8d0ff;
-      font-weight: 700;
-    }
-    td a {
-      color: #99c9ff;
-    }
-    td.status-confirmed {
-      color: #7eff7e;
-      font-weight: 600;
-    }
-    td.status-pending {
-      color: #ffb366;
-      font-weight: 600;
     }
     .alerts {
       background: rgba(255, 100, 100, 0.15);
@@ -234,25 +220,6 @@
       margin: 0.5rem 0 0 1.2rem;
       color: #ffd0d0;
       font-weight: 400;
-    }
-    .quick-links {
-      margin: 2rem auto;
-      max-width: 700px;
-      background: rgba(50, 100, 255, 0.10);
-      border-radius: 10px;
-      padding: 1rem 1.5rem;
-      color: #a8d0ff;
-      font-size: 1.1rem;
-      box-shadow: 0 2px 8px #3385ff44;
-    }
-    .quick-links a {
-      color: #e0f0ff;
-      margin-right: 1.5rem;
-      text-decoration: underline;
-      font-weight: 600;
-    }
-    .quick-links a:hover {
-      color: #66b2ff;
     }
     footer {
       text-align: center;
@@ -272,7 +239,7 @@
       main {
         padding: 2rem 1rem;
       }
-      .overall-stats {
+      .overall-stats, .stats-grid {
         flex-direction: column;
         align-items: center;
       }
@@ -284,24 +251,18 @@
       }
     }
   </style>
-  <!-- Chart.js CDN for simple charts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 </head>
 <body>
   <header>
-    <div class="logo" style="display:flex;align-items:center;gap:0.7rem;">
-      <!-- Zyra SVG Logo -->
-      <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;">
-        <circle cx="19" cy="19" r="18" stroke="#3385ff" stroke-width="2" fill="#0047ab"/>
-        <path d="M19 8L25 19H13L19 8Z" fill="#a8d0ff"/>
-        <circle cx="19" cy="25" r="4" fill="#66b2ff"/>
-      </svg>
+    <div class="logo">
+      <img src="zyra.svg" alt="ZYRA Logo" style="height:38px;width:38px;vertical-align:middle;margin-right:0.7rem;" />
       ZYRA
     </div>
     <nav>
       <a href="index.html">Dashboard</a>
       <a href="explorer.html">Explorer</a>
-      <a href="validators.html">Validators</a>
       <a href="governance.html">Governance</a>
       <a href="launchpad.html">Launchpad</a>
       <a href="nfts.html">NFTs</a>
@@ -309,13 +270,38 @@
     </nav>
     <div class="wallet-container">
       <button id="connectWalletBtn">Connect Wallet</button>
-      <button id="donateBtn" disabled>Donate 0.001 ETH</button>
+      <button id="exchangePageBtn">Exchange</button>
       <div id="walletDetails" style="margin-left:1rem; color:#a8d0ff; font-size:1.05rem;">
         <span>Wallet: <span id="walletAddress">Not connected</span></span><br>
         <span>Balance: <span id="walletBalance">-- ZYRA</span></span>
       </div>
     </div>
   </header>
+  <div class="dashboard-container">
+    <h1 class="dashboard-title">Zyra Blockchain Dashboard</h1>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="darkTps">--</div>
+        <div class="stat-label">Transactions per Second</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="darkLatency">-- ms</div>
+        <div class="stat-label">Average Latency</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="darkFinality">-- s</div>
+        <div class="stat-label">Finality Time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="darkHealth">--</div>
+        <div class="stat-label">Network Health</div>
+      </div>
+    </div>
+    <div class="chart-container">
+      <h3 style="color: #00ff88;">Network TPS Chart</h3>
+      <canvas id="darkChart" height="120"></canvas>
+    </div>
+  </div>
   <main>
     <h1>Zyra Blockchain Dashboard</h1>
     <div class="overall-stats">
@@ -323,11 +309,6 @@
         <h2>Total TPS</h2>
         <div class="value" id="totalTps">--</div>
         <div class="description">Transactions per second</div>
-      </div>
-      <div class="stat-card">
-        <h2>Active Nodes</h2>
-        <div class="value" id="activeNodes">--</div>
-        <div class="description">Online Validator Nodes</div>
       </div>
       <div class="stat-card">
         <h2>Average Latency</h2>
@@ -346,588 +327,233 @@
       </div>
     </div>
     <div class="chart-container">
-      <canvas id="tpsChart" height="120"></canvas>
+      <canvas id="analyticsChart" height="120"></canvas>
     </div>
-    <div class="chart-container" style="margin-top:2rem;">
-      <canvas id="latencyChart" height="120"></canvas>
-    </div>
-    <div class="nodes-grid" id="nodesGrid">
-      <!-- Node cards dynamically inserted here -->
-    </div>
-    <!-- Crypto Prices Section -->
-    <div class="chart-container" style="margin-top:2rem;">
-      <h2 style="text-align:center;color:#a8d0ff;">Top 1000 Crypto Prices (Live)</h2>
-      <div id="cryptoPrices" style="max-height:400px;overflow-y:auto;">
-        <table style="width:100%;border-collapse:collapse;">
-          <thead>
-            <tr>
-              <th style="color:#66b2ff;">#</th>
-              <th style="color:#66b2ff;">Name</th>
-              <th style="color:#66b2ff;">Symbol</th>
-              <th style="color:#66b2ff;">Price (USD)</th>
-              <th style="color:#66b2ff;">Change 24h</th>
-            </tr>
-          </thead>
-          <tbody id="cryptoTableBody">
-            <!-- Crypto prices will be rendered here -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="alerts" id="alerts">
-      <strong>Security Alerts:</strong>
-      <ul>
-        <li>No critical vulnerabilities detected.</li>
-        <li>Last audit: 2025-07-15</li>
-      </ul>
-    </div>
-    <div class="quick-links">
-      <strong>Quick Links:</strong>
-      <a href="explorer.html">Explorer</a>
-      <a href="validators.html">Validators</a>
-      <a href="governance.html">Governance</a>
-      <a href="launchpad.html">Launchpad</a>
-      <a href="nfts.html">NFTs</a>
-      <a href="docs.html">Docs</a>
-    </div>
-    <!-- AI Trading Assistant Section -->
     <div class="chart-container" style="margin-top:2rem;">
       <h2 style="text-align:center;color:#a8d0ff;">AI Trading Assistant</h2>
       <div id="aiTradingPanel"></div>
     </div>
-    <!-- On-Chain Governance Section -->
-    <div class="chart-container" style="margin-top:2rem;">
-      <h2 style="text-align:center;color:#a8d0ff;">On-Chain Governance</h2>
-      <div>
-        <button onclick="openProposalModal()">Submit Proposal</button>
-        <div id="governanceInfo"></div>
-      </div>
-    </div>
-    <!-- Developer Ecosystem Section -->
-    <div class="chart-container" style="margin-top:2rem;">
-      <h2 style="text-align:center;color:#a8d0ff;">Developer Ecosystem</h2>
-      <ul style="font-size:1.1rem;line-height:2;">
-        <li>
-          <strong>Zyra SDK:</strong>
-          <a href="https://github.com/zyra-blockchain/sdk-js" target="_blank">JavaScript SDK</a> &amp;
-          <a href="https://github.com/zyra-blockchain/sdk-py" target="_blank">Python SDK</a>
-          for building dApps quickly.
-        </li>
-        <li>
-          <strong>Smart Contract Templates:</strong>
-          <a href="contracts/erc20-template.sol" target="_blank">ERC-20</a>,
-          <a href="contracts/erc721-template.sol" target="_blank">ERC-721</a>,
-          <a href="contracts/defi-pool-template.sol" target="_blank">DeFi Pool</a>
-          — all pre-configured for Zyra.
-        </li>
-        <li>
-          <strong>Testnet Faucet:</strong>
-          <a href="faucet.html" target="_blank">Request Test Tokens</a> (automated token distribution for developers).
-        </li>
-        <li>
-          <strong>Comprehensive Docs:</strong>
-          <a href="docs.html" target="_blank">API Reference, Tutorials, Deployment Guides</a>
-        </li>
-      </ul>
-    </div>
-    <!-- User-Facing Apps Section -->
-    <div class="chart-container" style="margin-top:2rem;">
-      <h2 style="text-align:center;color:#a8d0ff;">User-Facing Apps</h2>
-      <ul style="font-size:1.1rem;line-height:2;">
-        <li>
-          <strong>Zyra Wallet:</strong>
-          <a href="https://github.com/zyra-blockchain/wallet-extension" target="_blank">Browser Extension</a> &amp;
-          <a href="https://github.com/zyra-blockchain/wallet-mobile" target="_blank">Mobile App</a>
-          — supports transfers, staking, NFTs.
-        </li>
-        <li>
-          <strong>Bridge:</strong>
-          <a href="bridge.html" target="_blank">Transfer assets between Zyra and Ethereum/Solana</a>
-        </li>
-        <li>
-          <strong>Block Explorer Enhancements:</strong>
-          <a href="explorer.html" target="_blank">Address profiles, token tracking, analytics charts</a>
-        </li>
-      </ul>
-    </div>
-    <!-- Mint Zyra Token Section -->
-    <div class="chart-container" style="margin-top:2rem;">
-      <h2 style="text-align:center;color:#a8d0ff;">Mint Zyra Token</h2>
-      <button id="mintTokenBtn">Mint 1000 ZYRA</button>
-      <div id="mintStatus" style="margin-top:1rem;color:#7eff7e;"></div>
-    </div>
-    <!-- Zyra Wallet Integration Section -->
-    <div class="chart-container" style="margin-top:2rem;">
-      <h2 style="text-align:center;color:#a8d0ff;">Zyra Wallet</h2>
-      <div id="zyraWalletPanel">
-        <button id="zyraConnectBtn">Connect Zyra Wallet</button>
-        <button id="zyraDisconnectBtn" style="display:none;">Disconnect</button>
-        <div id="zyraWalletInfo" style="margin-top:1rem;">
-          <strong>Address:</strong> <span id="zyraWalletAddress">Not connected</span><br>
-          <strong>Balance:</strong> <span id="zyraWalletBalance">-- ZYRA</span>
-        </div>
-        <div style="margin-top:1.5rem;">
-          <button id="zyraSendBtn" disabled>Send Tokens</button>
-          <button id="zyraStakeBtn" disabled>Stake</button>
-          <button id="zyraNFTBtn" disabled>View NFTs</button>
-        </div>
-        <div id="zyraWalletStatus" style="margin-top:1rem;color:#7eff7e;"></div>
-      </div>
-    </div>
-    <!-- Real-time NFT Gallery Section -->
-    <div class="chart-container" style="margin-top:2rem;">
-      <h2 style="text-align:center;color:#a8d0ff;">Live NFT Gallery</h2>
-      <div id="nftGallery" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.2rem;"></div>
-    </div>
-
-    <!-- Governance Voting Section -->
-    <div class="chart-container" style="margin-top:2rem;">
-      <h2 style="text-align:center;color:#a8d0ff;">Governance Voting</h2>
-      <div id="governanceVotingPanel"></div>
-    </div>
-
-    <!-- Analytics Section -->
-    <div class="chart-container" style="margin-top:2rem;">
-      <h2 style="text-align:center;color:#a8d0ff;">Advanced Analytics</h2>
-      <canvas id="analyticsChart" height="120"></canvas>
-    </div>
+    <div class="alerts" id="alerts"></div>
   </main>
+  <button id="donateBtnBottom" disabled style="
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 1000;
+    background: linear-gradient(90deg,#7eff7e,#3385ff);
+    color: #001f4d;
+    border: 3px solid #00ff88;
+    border-radius: 16px;
+    padding: 1rem 2.2rem;
+    font-weight: 900;
+    font-size: 1.3rem;
+    box-shadow: 0 0 24px #7eff7e99, 0 4px 24px #3385ff77;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s, transform 0.2s, box-shadow 0.3s;
+    outline: 3px solid #00ff88;
+    outline-offset: 3px;
+  ">
+    Donate 0.001 ETH
+  </button>
   <footer>
     © 2025 Zyra Blockchain. All rights reserved.
   </footer>
   <script>
-    // Validator nodes example data
-    const validatorNodes = [
-      { id: 1, name: 'Validator-1', tps: 21000, online: true, latency: 85, value: 22000 },
-      { id: 2, name: 'Validator-2', tps: 22000, online: true, latency: 120, value: 23000 },
-      { id: 3, name: 'Validator-3', tps: 23000, online: true, latency: 100, value: 21000 },
-      { id: 4, name: 'Validator-4', tps: 25000, online: true, latency: 95, value: 25500 },
-      { id: 5, name: 'Validator-5', tps: 24000, online: true, latency: 110, value: 24500 },
-      { id: 6, name: 'Validator-6', tps: 50000, online: true, latency: 80, value: 50000 } // Added node with TPS of 50k and value over 20k
-    ];
-
-    // TPS and latency chart data
-    let tpsHistory = [160, 170, 180, 175, 190, 185, 200, 210, 205, 220];
-    let latencyHistory = [110, 105, 120, 115, 100, 95, 90, 100, 105, 98];
-    let tpsChart, latencyChart;
-
-    function randFloat(min, max, decimals = 2) {
-      return (Math.random() * (max - min) + min).toFixed(decimals);
-    }
-
-    function updateOverallStats() {
-      const onlineNodes = validatorNodes.filter(n => n.online);
-      const totalTps = onlineNodes.reduce((acc, n) => acc + n.tps, 0);
-      const avgLatency = onlineNodes.length
-        ? Math.round(onlineNodes.reduce((acc, n) => acc + n.latency, 0) / onlineNodes.length)
-        : 0;
-      const finalityTime = randFloat(1, 4, 2);
-
-      document.getElementById('totalTps').textContent = totalTps.toLocaleString();
-      document.getElementById('activeNodes').textContent = onlineNodes.length;
-      document.getElementById('avgLatency').textContent = avgLatency + ' ms';
-      document.getElementById('finalityTime').textContent = finalityTime + ' s';
-
-      // Network health logic
-      let health = "Excellent";
-      if (onlineNodes.length < validatorNodes.length) health = "Degraded";
-      if (onlineNodes.length <= 2) health = "Critical";
-      document.getElementById('networkHealth').textContent = health;
-
-      // Update TPS & latency charts
-      tpsHistory.push(totalTps);
-      if (tpsHistory.length > 10) tpsHistory.shift();
-      latencyHistory.push(avgLatency);
-      if (latencyHistory.length > 10) latencyHistory.shift();
-      if (tpsChart) {
-        tpsChart.data.datasets[0].data = tpsHistory;
-        tpsChart.update();
-      }
-      if (latencyChart) {
-        latencyChart.data.datasets[0].data = latencyHistory;
-        latencyChart.update();
-      }
-    }
-
-    function renderNodes() {
-      const grid = document.getElementById('nodesGrid');
-      grid.innerHTML = '';
-      validatorNodes.forEach(node => {
-        const card = document.createElement('div');
-        card.className = 'node-card';
-        card.innerHTML = `
-          <h3>${node.name}</h3>
-          <div class="tps">${node.online ? node.tps.toLocaleString() : '--'} TPS</div>
-          <div class="status ${node.online ? 'online' : 'offline'}">${node.online ? 'Online' : 'Offline'}</div>
-          <div class="description">Latency: ${node.online ? node.latency + ' ms' : '--'}</div>
-          <div class="description" style="font-weight:700;color:#7eff7e;">
-            Value: ${node.value ? node.value.toLocaleString() + ' ZYRA' : '--'}
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    // Wallet connect simulation with address and balance
-    const connectWalletBtn = document.getElementById('connectWalletBtn');
-    const donateBtn = document.getElementById('donateBtn');
-    const walletAddressSpan = document.getElementById('walletAddress');
-    const walletBalanceSpan = document.getElementById('walletBalance');
-
-    let walletConnected = false;
-    let walletAddress = "Not connected";
-    let walletBalance = "-- ZYRA";
-
-    connectWalletBtn.addEventListener('click', () => {
-      walletConnected = !walletConnected;
-      if(walletConnected) {
-        walletAddress = "0xAb12...4Ef8"; // Simulate address
-        walletBalance = "1200.5 ZYRA";   // Simulate balance
-        connectWalletBtn.textContent = 'Disconnect Wallet';
-        donateBtn.disabled = false;
-      } else {
-        walletAddress = "Not connected";
-        walletBalance = "-- ZYRA";
-        connectWalletBtn.textContent = 'Connect Wallet';
-        donateBtn.disabled = true;
-      }
-      walletAddressSpan.textContent = walletAddress;
-      walletBalanceSpan.textContent = walletBalance;
-    });
-
-    donateBtn.addEventListener('click', () => {
-      if (!walletConnected) return alert('Connect wallet first!');
-      alert('Donation of 0.001 ETH sent. Thank you!');
-    });
-
-    function renderTpsChart() {
-      const ctx = document.getElementById('tpsChart').getContext('2d');
-      tpsChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: Array.from({length: tpsHistory.length}, (_, i) => `T-${tpsHistory.length - i}`),
-          datasets: [{
-            label: 'TPS History',
-            data: tpsHistory,
-            borderColor: '#66b2ff',
-            backgroundColor: 'rgba(102,178,255,0.2)',
-            fill: true,
-            tension: 0.3,
-            pointRadius: 2
-          }]
-        },
-        options: {
-          scales: {
-            x: { display: false },
-            y: { beginAtZero: true }
-          },
-          plugins: {
-            legend: { display: false }
-          }
-        }
-      });
-    }
-
-    function renderLatencyChart() {
-      const ctx = document.getElementById('latencyChart').getContext('2d');
-      latencyChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: Array.from({length: latencyHistory.length}, (_, i) => `T-${latencyHistory.length - i}`),
-          datasets: [{
-            label: 'Latency History',
-            data: latencyHistory,
-            borderColor: '#ffb366',
-            backgroundColor: 'rgba(255,179,102,0.2)',
-            fill: true,
-            tension: 0.3,
-            pointRadius: 2
-          }]
-        },
-        options: {
-          scales: {
-            x: { display: false },
-            y: { beginAtZero: true }
-          },
-          plugins: {
-            legend: { display: false }
-          }
-        }
-      });
-    }
-
-    // --- Crypto Prices Section ---
-    async function fetchCryptoPrices() {
-      const url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&sparkline=false&page=";
-      let allCoins = [];
-      for (let page = 1; page <= 10; page++) {
-        try {
-          const res = await fetch(url + page);
-          const coins = await res.json();
-          allCoins = allCoins.concat(coins);
-        } catch (e) {
-          break;
-        }
-      }
-      renderCryptoPrices(allCoins);
-    }
-
-    function renderCryptoPrices(coins) {
-      const tbody = document.getElementById('cryptoTableBody');
-      tbody.innerHTML = '';
-      coins.forEach((coin, idx) => {
-        // Create table row and cells safely
-        const tr = document.createElement('tr');
-
-        const tdIdx = document.createElement('td');
-        tdIdx.textContent = idx + 1;
-
-        const tdName = document.createElement('td');
-        const img = document.createElement('img');
-        img.src = coin.image;
-        img.alt = coin.name;
-        img.style = "width:20px;height:20px;vertical-align:middle;border-radius:50%;margin-right:6px;";
-        tdName.appendChild(img);
-        tdName.appendChild(document.createTextNode(coin.name));
-
-        const tdSymbol = document.createElement('td');
-        tdSymbol.textContent = coin.symbol.toUpperCase();
-
-        const tdPrice = document.createElement('td');
-        tdPrice.textContent = `$${coin.current_price.toLocaleString()}`;
-
-        const tdChange = document.createElement('td');
-        tdChange.textContent = coin.price_change_percentage_24h ? coin.price_change_percentage_24h.toFixed(2) + '%' : '0.00%';
-        tdChange.style.color = coin.price_change_percentage_24h >= 0 ? '#7eff7e' : '#ff7e7e';
-
-        tr.appendChild(tdIdx);
-        tr.appendChild(tdName);
-        tr.appendChild(tdSymbol);
-        tr.appendChild(tdPrice);
-        tr.appendChild(tdChange);
-
-        tbody.appendChild(tr);
-      });
-    }
-
-    // Mint Zyra Token - error messages are set as textContent, not HTML
-    mintTokenBtn.onclick = async function() {
-      if (!window.ethereum) {
-        mintStatus.textContent = "Please install MetaMask or a compatible wallet.";
-        return;
-      }
-      mintStatus.textContent = "Waiting for wallet...";
-      try {
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(tokenAddress, tokenAbi, signer);
-        const userAddress = await signer.getAddress();
-        // Validate address format (basic check)
-        if (!/^0x[a-fA-F0-9]{40}$/.test(userAddress)) {
-          mintStatus.textContent = "❌ Invalid wallet address.";
-          return;
-        }
-        const tx = await contract.mint(userAddress, ethers.utils.parseUnits("1000", 18));
-        mintStatus.textContent = "Minting... Please wait for confirmation.";
-        await tx.wait();
-        mintStatus.textContent = "✅ Successfully minted 1000 ZYRA!";
-      } catch (err) {
-        // Prevent HTML injection in error messages
-        mintStatus.textContent = "❌ Mint failed: " + (err && err.message ? err.message.replace(/</g, "&lt;").replace(/>/g, "&gt;") : "Unknown error");
-      }
-    };
-
-    // --- Real-time NFT Gallery via WebSocket ---
-    const nftGallery = document.getElementById('nftGallery');
-    const nftWs = new WebSocket("wss://api.zyra.network/nft-stream");
-    nftWs.onmessage = function(event) {
-      try {
-        const nfts = JSON.parse(event.data);
-        nftGallery.innerHTML = '';
-        nfts.forEach(nft => {
-          const card = document.createElement('div');
-          card.style = "background:#1e293b;border-radius:12px;padding:1rem;text-align:center;color:#d0e8ff;box-shadow:0 2px 8px #3385ff44;";
-          card.innerHTML = `
-            <img src="${nft.image}" alt="${nft.name}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;margin-bottom:0.7rem;">
-            <div style="font-weight:700;">${nft.name}</div>
-            <div style="font-size:0.95rem;">${nft.description || ''}</div>
-            <div style="font-size:0.85rem;color:#66b2ff;margin-top:0.5rem;">Owner: ${nft.owner.slice(0,8)}...</div>
-          `;
-          nftGallery.appendChild(card);
-        });
-      } catch(e) {}
-    };
-
-    // --- Governance Voting (live proposals & voting) ---
-    async function fetchProposals() {
-      // Replace with your governance API endpoint
-      const res = await fetch("https://api.zyra.network/governance/proposals");
-      const proposals = await res.json();
-      renderGovernanceVoting(proposals);
-    }
-    function renderGovernanceVoting(proposals) {
-      const panel = document.getElementById('governanceVotingPanel');
-      panel.innerHTML = '';
-      proposals.forEach(p => {
-        const div = document.createElement('div');
-        div.style = "background:#1e293b;border-radius:10px;padding:1rem;margin-bottom:1rem;color:#d0e8ff;box-shadow:0 2px 8px #3385ff44;";
-        div.innerHTML = `
-          <div style="font-weight:700;">${p.title}</div>
-          <div style="font-size:0.95rem;">${p.description}</div>
-          <div style="margin-top:0.7rem;">
-            <button onclick="voteProposal('${p.id}','yes')" style="margin-right:1rem;">Vote Yes</button>
-            <button onclick="voteProposal('${p.id}','no')">Vote No</button>
-          </div>
-          <div style="margin-top:0.5rem;font-size:0.85rem;color:#66b2ff;">Yes: ${p.votes_yes} | No: ${p.votes_no}</div>
-        `;
-        panel.appendChild(div);
-      });
-    }
-    async function voteProposal(id, vote) {
-      // Replace with your governance voting API
-      await fetch("https://api.zyra.network/governance/vote", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ proposal_id: id, vote })
-      });
-      fetchProposals();
-    }
-    fetchProposals();
-
-    // --- Advanced Analytics Chart (live data) ---
+    // Remove validatorNodes and related logic
+    // Advanced Analytics Live Section
     const analyticsCtx = document.getElementById('analyticsChart').getContext('2d');
     const analyticsChart = new Chart(analyticsCtx, {
       type: 'bar',
       data: {
-        labels: ['TPS', 'Nodes', 'Latency', 'Finality'],
+        labels: ['TPS', 'Latency', 'Finality'],
         datasets: [{
-          label: 'Live Metrics',
-          data: [0,0,0,0],
-          backgroundColor: ['#66b2ff','#a8d0ff','#ffb366','#7eff7e']
+          label: 'Live Network Stats',
+          data: [0, 0, 0],
+          backgroundColor: [
+            '#3385ff', '#ffb366', '#a8d0ff'
+          ]
         }]
       },
       options: {
-        scales: { y: { beginAtZero: true } },
-        plugins: { legend: { display: false } }
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
       }
     });
-    // Update analytics chart via WebSocket
-    const analyticsWs = new WebSocket("wss://api.zyra.network/analytics");
-    analyticsWs.onmessage = function(event) {
-      try {
-        const data = JSON.parse(event.data);
-        analyticsChart.data.datasets[0].data = [
-          data.tps, data.nodes, data.latency, data.finality
-        ];
-        analyticsChart.update();
-      } catch(e) {}
-    };
 
-    document.addEventListener('DOMContentLoaded', () => {
-      renderNodes();
-      updateOverallStats();
-    });
-  </script>
-  <!-- Include AI Trading Assistant script -->
-  <script src="ai-trading-assistant.js"></script>
-  <!-- Ethers.js for minting tokens -->
-  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-  <script>
-  const mintTokenBtn = document.getElementById('mintTokenBtn');
-  const mintStatus = document.getElementById('mintStatus');
+    function updateAnalyticsLive() {
+      const tps = Math.floor(Math.random() * 1000) + 50000;
+      const latency = Math.floor(Math.random() * 40) + 80;
+      const finality = (Math.random() * 2 + 1).toFixed(2);
 
-  // Replace with your contract's address and ABI
-  const tokenAddress = "0xYourTokenContractAddress";
-  const tokenAbi = [
-    // Only the mint function ABI is needed for this example
-    "function mint(address to, uint256 amount) public"
-  ];
+      analyticsChart.data.datasets[0].data = [tps, latency, finality];
+      analyticsChart.update();
 
-  mintTokenBtn.onclick = async function() {
-    if (!window.ethereum) {
-      mintStatus.textContent = "Please install MetaMask or a compatible wallet.";
-      return;
+      document.getElementById('totalTps').textContent = tps.toLocaleString();
+      document.getElementById('avgLatency').textContent = latency + " ms";
+      document.getElementById('finalityTime').textContent = finality + " s";
+      document.getElementById('networkHealth').textContent = (tps > 50000 && latency < 120) ? "Excellent" : "Good";
     }
-    mintStatus.textContent = "Waiting for wallet...";
-    try {
-      await window.ethereum.request({ method: 'eth_requestAccounts' });
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(tokenAddress, tokenAbi, signer);
-      const userAddress = await signer.getAddress();
-      // Validate address format (basic check)
-      if (!/^0x[a-fA-F0-9]{40}$/.test(userAddress)) {
-        mintStatus.textContent = "❌ Invalid wallet address.";
+
+    setInterval(updateAnalyticsLive, 3000);
+    updateAnalyticsLive();
+
+    // AI Trading Assistant
+    async function loadAITradingSignals() {
+      const signals = [
+        { time: "15:00", signal: "BUY", confidence: "92%" },
+        { time: "14:00", signal: "HOLD", confidence: "78%" },
+        { time: "13:00", signal: "SELL", confidence: "88%" }
+      ];
+      let html = "<table style='width:100%;'><tr><th>Time</th><th>Signal</th><th>Confidence</th></tr>";
+      signals.forEach(s => {
+        html += `<tr>
+          <td>${s.time}</td>
+          <td style="font-weight:700;color:${s.signal==='BUY'?'#7eff7e':s.signal==='SELL'?'#ff7e7e':'#ffb366'}">${s.signal}</td>
+          <td>${s.confidence}</td>
+        </tr>`;
+      });
+      html += "</table>";
+      document.getElementById('aiTradingPanel').innerHTML = html;
+    }
+    loadAITradingSignals();
+
+    // Security Alerts
+    function updateAlerts() {
+      const alerts = [
+        "No critical vulnerabilities detected.",
+        "Last audit: 2025-07-15",
+        "All smart contracts verified.",
+        "Network health: Excellent"
+      ];
+      document.getElementById('alerts').innerHTML = `
+        <strong>Security Alerts:</strong>
+        <ul>${alerts.map(a => `<li>${a}</li>`).join('')}</ul>
+      `;
+    }
+    updateAlerts();
+
+    document.body.setAttribute('lang', 'en');
+    document.body.setAttribute('aria-label', 'Zyra Blockchain Dashboard');
+
+    // MetaMask connection logic
+    const connectWalletBtn = document.getElementById('connectWalletBtn');
+    const walletAddressSpan = document.getElementById('walletAddress');
+    const walletBalanceSpan = document.getElementById('walletBalance');
+    const donateBtnBottom = document.getElementById('donateBtnBottom');
+
+    let walletAddress = null;
+
+    connectWalletBtn.onclick = async function() {
+      if (!window.ethereum) {
+        alert("MetaMask not detected. Please install MetaMask extension.");
         return;
       }
-      const tx = await contract.mint(userAddress, ethers.utils.parseUnits("1000", 18));
-      mintStatus.textContent = "Minting... Please wait for confirmation.";
-      await tx.wait();
-      mintStatus.textContent = "✅ Successfully minted 1000 ZYRA!";
-    } catch (err) {
-      // Prevent HTML injection in error messages
-      mintStatus.textContent = "❌ Mint failed: " + (err && err.message ? err.message.replace(/</g, "&lt;").replace(/>/g, "&gt;") : "Unknown error");
+      try {
+        connectWalletBtn.disabled = true;
+        connectWalletBtn.textContent = "Connecting...";
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        walletAddress = accounts[0];
+        walletAddressSpan.textContent = walletAddress.slice(0, 6) + "..." + walletAddress.slice(-4);
+        connectWalletBtn.textContent = "Disconnect Wallet";
+        connectWalletBtn.disabled = false;
+        donateBtnBottom.disabled = false;
+
+        // Get balance
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const balance = await provider.getBalance(walletAddress);
+        walletBalanceSpan.textContent = ethers.utils.formatEther(balance) + " ETH";
+
+        // Disconnect logic
+        connectWalletBtn.onclick = function() {
+          walletAddress = null;
+          walletAddressSpan.textContent = "Not connected";
+          walletBalanceSpan.textContent = "-- ZYRA";
+          connectWalletBtn.textContent = "Connect Wallet";
+          donateBtnBottom.disabled = true;
+          connectWalletBtn.onclick = connectWalletBtn;
+        };
+      } catch (err) {
+        alert("Wallet connection failed: " + err.message);
+        connectWalletBtn.textContent = "Connect Wallet";
+        connectWalletBtn.disabled = false;
+      }
+    };
+
+    // Exchange page button logic
+    document.getElementById('exchangePageBtn').onclick = function() {
+      window.location.href = "exchange.html";
+    };
+
+    // Donate button logic (send 0.001 ETH) - now at bottom
+    donateBtnBottom.onclick = async function() {
+      if (!walletAddress) return;
+      try {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const tx = await signer.sendTransaction({
+          to: "0xE558B4a71aCEe20317B2A5f7710a317eF54E0bC6", // Updated donation address
+          value: ethers.utils.parseEther("0.001")
+        });
+        alert("Donation sent! Tx hash: " + tx.hash);
+      } catch (err) {
+        alert("Donation failed: " + err.message);
+      }
+    };
+
+    // Dark theme chart
+    const darkChartCtx = document.getElementById('darkChart').getContext('2d');
+    const darkChart = new Chart(darkChartCtx, {
+      type: 'line',
+      data: {
+        labels: Array.from({length: 10}, (_, i) => `T-${10-i}`),
+        datasets: [{
+          label: 'TPS',
+          data: Array(10).fill(0),
+          borderColor: '#00ff88',
+          backgroundColor: 'rgba(0,255,136,0.08)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { color: '#00ff88' } }, x: { ticks: { color: '#00ff88' } } }
+      }
+    });
+
+    function updateDarkDashboard(tps, latency, finality, health) {
+      document.getElementById('darkTps').textContent = tps.toLocaleString();
+      document.getElementById('darkLatency').textContent = latency + " ms";
+      document.getElementById('darkFinality').textContent = finality + " s";
+      document.getElementById('darkHealth').textContent = health;
     }
-  };
 
-  // Zyra Wallet integration script
-  const zyraConnectBtn = document.getElementById('zyraConnectBtn');
-  const zyraDisconnectBtn = document.getElementById('zyraDisconnectBtn');
-  const zyraWalletAddress = document.getElementById('zyraWalletAddress');
-  const zyraWalletBalance = document.getElementById('zyraWalletBalance');
-  const zyraSendBtn = document.getElementById('zyraSendBtn');
-  const zyraStakeBtn = document.getElementById('zyraStakeBtn');
-  const zyraNFTBtn = document.getElementById('zyraNFTBtn');
-  const zyraWalletStatus = document.getElementById('zyraWalletStatus');
+    // Update both dashboards every 3 seconds
+    function updateBothDashboards() {
+      const tps = Math.floor(Math.random() * 1000) + 50000;
+      const latency = Math.floor(Math.random() * 40) + 80;
+      const finality = (Math.random() * 2 + 1).toFixed(2);
+      const health = (tps > 50000 && latency < 120) ? "Excellent" : "Good";
 
-  let zyraWalletConnected = false;
-  let zyraAddress = "Not connected";
-  let zyraBalance = "-- ZYRA";
+      // Update default dashboard
+      document.getElementById('totalTps').textContent = tps.toLocaleString();
+      document.getElementById('avgLatency').textContent = latency + " ms";
+      document.getElementById('finalityTime').textContent = finality + " s";
+      document.getElementById('networkHealth').textContent = health;
 
-  // Simulate Zyra Wallet connection
-  zyraConnectBtn.onclick = function() {
-    zyraWalletConnected = true;
-    zyraAddress = "0xZyra123...abcd";
-    zyraBalance = "5000 ZYRA";
-    zyraWalletAddress.textContent = zyraAddress;
-    zyraWalletBalance.textContent = zyraBalance;
-    zyraConnectBtn.style.display = "none";
-    zyraDisconnectBtn.style.display = "";
-    zyraSendBtn.disabled = false;
-    zyraStakeBtn.disabled = false;
-    zyraNFTBtn.disabled = false;
-    zyraWalletStatus.textContent = "✅ Zyra Wallet connected!";
-  };
+      // Update dark theme dashboard
+      updateDarkDashboard(tps, latency, finality, health);
 
-  zyraDisconnectBtn.onclick = function() {
-    zyraWalletConnected = false;
-    zyraAddress = "Not connected";
-    zyraBalance = "-- ZYRA";
-    zyraWalletAddress.textContent = zyraAddress;
-    zyraWalletBalance.textContent = zyraBalance;
-    zyraConnectBtn.style.display = "";
-    zyraDisconnectBtn.style.display = "none";
-    zyraSendBtn.disabled = true;
-    zyraStakeBtn.disabled = true;
-    zyraNFTBtn.disabled = true;
-    zyraWalletStatus.textContent = "Disconnected.";
-  };
+      // Update dark chart
+      darkChart.data.datasets[0].data.push(tps);
+      if (darkChart.data.datasets[0].data.length > 10) darkChart.data.datasets[0].data.shift();
+      darkChart.update();
+    }
 
-  zyraSendBtn.onclick = function() {
-    if (!zyraWalletConnected) return;
-    zyraWalletStatus.textContent = "Send Tokens: Feature coming soon!";
-  };
-
-  zyraStakeBtn.onclick = function() {
-    if (!zyraWalletConnected) return;
-    zyraWalletStatus.textContent = "Stake: Feature coming soon!";
-  };
-
-  zyraNFTBtn.onclick = function() {
-    if (!zyraWalletConnected) return;
-    zyraWalletStatus.textContent = "NFTs: Feature coming soon!";
-  };
+    setInterval(updateBothDashboards, 3000);
+    updateBothDashboards();
   </script>
 </body>
 </html>
