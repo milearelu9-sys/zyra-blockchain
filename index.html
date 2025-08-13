@@ -5,88 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Zyra Blockchain Dashboard</title>
   <style>
-    /* Zyra Dark Theme */
-body {
-  background: linear-gradient(160deg, #0a0a0a, #0f1a1a);
-  color: #e5e5e5;
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 0;
-}
-.dashboard-container {
-  padding: 30px;
-  max-width: 1200px;
-  margin: auto;
-}
-.dashboard-title {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-  font-weight: bold;
-  color: #00ff88;
-}
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-}
-.stat-card {
-  background: rgba(20, 20, 20, 0.8);
-  border: 1px solid rgba(0, 255, 136, 0.3);
-  border-radius: 12px;
-  padding: 20px;
-  text-align: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 255, 136, 0.1);
-}
-.stat-card:hover {
-  transform: translateY(-5px);
-  border-color: #00ff88;
-  box-shadow: 0 6px 16px rgba(0, 255, 136, 0.3);
-}
-.stat-value {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #00ff88;
-}
-.stat-label {
-  font-size: 0.9rem;
-  opacity: 0.7;
-}
-.chart-container {
-  margin-top: 40px;
-  background: rgba(20, 20, 20, 0.85);
-  border: 1px solid rgba(0, 255, 136, 0.2);
-  border-radius: 12px;
-  padding: 20px;
-}
+    /* Ultra advanced, timeless dashboard styles with light green shadow */
     body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0047ab 0%, #001f4d 100%);
-      color: #d0e8ff;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(160deg, #0a0a0a 0%, #0047ab 100%);
+      color: #e5e5e5;
       margin: 0;
       min-height: 100vh;
+      transition: background 0.5s;
+      /* Removed global text-shadow */
+    }
+    /* Remove global text-shadow from all elements */
+    h1, h2, h3, h4, h5, h6, p, span, div, a, th, td, label, button, input, .stat-value, .stat-label, .description {
+      text-shadow: none !important;
+    }
+    /* Only Zyra Dashboard title gets dark green */
+    .dashboard-title, main h1 {
+      color: #0a4d1a !important; /* dark green */
+      background: none !important;
+      -webkit-background-clip: unset !important;
+      -webkit-text-fill-color: unset !important;
+      background-clip: unset !important;
+      text-align: center;
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin-bottom: 2rem;
+      animation: fadeIn 1s;
     }
     header {
-      padding: 1rem 3rem;
-      background: rgba(0, 71, 171, 0.9);
+      padding: 1.2rem 3rem;
+      background: rgba(0, 71, 171, 0.92);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      box-shadow: 0 4px 16px #3385ff44;
+      border-bottom: 2px solid #3385ff44;
     }
     .logo {
       font-weight: 700;
-      font-size: 1.6rem;
+      font-size: 1.7rem;
       color: #a8d0ff;
       letter-spacing: 0.15em;
       text-transform: uppercase;
       display: flex;
       align-items: center;
       gap: 0.7rem;
+      animation: logoPulse 2s infinite alternate;
+    }
+    @keyframes logoPulse {
+      from { filter: drop-shadow(0 0 0 #7eff7e); }
+      to { filter: drop-shadow(0 0 12px #7eff7e); }
     }
     nav {
       display: flex;
       gap: 2rem;
+      flex-wrap: wrap;
     }
     nav a {
       font-weight: 600;
@@ -95,38 +69,78 @@ body {
       text-decoration: none;
       padding: 0.3rem 0.5rem;
       border-radius: 4px;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+      box-shadow: 0 2px 8px #3385ff22;
+      margin-bottom: 0.5rem;
+      margin-right: 0.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
     }
     nav a:hover {
       background-color: #3385ffcc;
       color: #001f4d;
+      outline: 2px solid #66b2ff;
+      outline-offset: 2px;
+      box-shadow: 0 4px 16px #7eff7e44;
+      transform: scale(1.08);
     }
     .wallet-container {
       display: flex;
       gap: 1rem;
       align-items: center;
     }
-    button {
-      background: #1e3c82;
-      color: #a8d0ff;
-      border: 1.5px solid #3385ff;
+    #connectWalletBtn {
+      background: linear-gradient(90deg, #3385ff, #7eff7e);
+      color: #001f4d;
+      border: none;
+      border-radius: 8px;
+      padding: 0.8rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    #connectWalletBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(51, 133, 255, 0.4);
+    }
+    #connectWalletBtn:disabled {
+      background: linear-gradient(90deg, #3385ff88, #7eff7e88);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    #exchangePageBtn, #donateBtnBottom {
+      background: linear-gradient(90deg,#3385ff,#7eff7e);
+      color: #001f4d;
+      border: none;
       border-radius: 8px;
       padding: 0.45rem 1.1rem;
-      font-weight: 600;
-      font-size: 0.9rem;
+      font-weight: 700;
+      font-size: 1rem;
       cursor: pointer;
-      transition: background-color 0.3s ease, color 0.3s ease;
       min-width: 120px;
+      box-shadow: 0 2px 8px #3385ff44;
+      transition: background 0.3s, color 0.3s, transform 0.2s;
+      margin-bottom: 0.5rem;
+      margin-right: 0.5rem;
     }
-    button:hover {
-      background-color: #3385ff;
-      color: #001f4d;
+    #exchangePageBtn:hover, #donateBtnBottom:hover {
+      background: linear-gradient(90deg,#7eff7e,#3385ff);
+      color: #181f2a;
+      transform: scale(1.06);
     }
-    button:disabled {
+    #donateBtnBottom:disabled {
       background-color: #555f7a;
       color: #9cb4ff99;
-      border-color: #666f8c;
       cursor: not-allowed;
+      border-color: #666f8c;
+    }
+    #walletDetails {
+      background: rgba(51, 133, 255, 0.1);
+      padding: 0.8rem 1.2rem;
+      border-radius: 8px;
+      border: 1px solid rgba(51, 133, 255, 0.2);
     }
     main {
       flex-grow: 1;
@@ -134,19 +148,16 @@ body {
       max-width: 1200px;
       margin: 0 auto 3rem auto;
     }
-    main h1 {
-      color: #a8d0ff;
-      font-size: 3rem;
-      margin-bottom: 2rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-align: center;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-30px);}
+      to { opacity: 1; transform: translateY(0);}
     }
-    .overall-stats {
+    .overall-stats, .stats-grid {
       display: flex;
       justify-content: center;
       gap: 2rem;
       margin-bottom: 3rem;
+      flex-wrap: wrap;
     }
     .stat-card {
       background: rgba(50, 100, 255, 0.15);
@@ -158,6 +169,11 @@ body {
       width: 180px;
       cursor: default;
       transition: transform 0.3s ease;
+      animation: fadeInCard 1.2s;
+    }
+    @keyframes fadeInCard {
+      from { opacity: 0; transform: translateY(30px);}
+      to { opacity: 1; transform: translateY(0);}
     }
     .stat-card:hover {
       transform: translateY(-6px);
@@ -170,12 +186,12 @@ body {
       color: #66b2ff;
       letter-spacing: 0.05em;
     }
-    .stat-card .value {
+    .stat-card .value, .stat-value {
       font-weight: 700;
       font-size: 2.4rem;
       color: #e0f0ff;
     }
-    .stat-card .description {
+    .stat-card .description, .stat-label {
       margin-top: 0.5rem;
       font-weight: 400;
       font-size: 0.95rem;
@@ -189,91 +205,6 @@ body {
       padding: 1.5rem;
       box-shadow: 0 0 12px #3399ff99;
       color: #d0e8ff;
-    }
-    .nodes-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.6rem;
-      margin-bottom: 3rem;
-    }
-    .node-card {
-      background: rgba(30, 60, 130, 0.7);
-      border-radius: 15px;
-      padding: 1.6rem 1.8rem;
-      box-shadow: 0 0 12px #3399ff99;
-      color: #d0e8ff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      transition: box-shadow 0.3s ease;
-      cursor: default;
-    }
-    .node-card:hover {
-      box-shadow: 0 0 25px #66b2ffcc;
-    }
-    .node-card h3 {
-      margin: 0 0 0.5rem 0;
-      font-weight: 700;
-      font-size: 1.3rem;
-      color: #66b2ff;
-    }
-    .node-card .tps {
-      font-weight: 700;
-      font-size: 2rem;
-      color: #cce4ff;
-    }
-    .node-card .status {
-      margin-top: 0.6rem;
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: #a0c4ffbb;
-    }
-    .status.online {
-      color: #7eff7e;
-    }
-    .status.offline {
-      color: #ff7e7e;
-    }
-    .tx-dashboard {
-      background: rgba(30, 60, 130, 0.7);
-      border-radius: 15px;
-      padding: 1.6rem 2rem;
-      box-shadow: 0 0 20px #3399ffbb;
-      color: #d0e8ff;
-      max-height: 360px;
-      overflow-y: auto;
-    }
-    .tx-dashboard h2 {
-      color: #66b2ff;
-      margin-bottom: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 0.65rem 0.8rem;
-      text-align: left;
-      font-size: 0.95rem;
-      border-bottom: 1px solid #3385ff44;
-      white-space: nowrap;
-    }
-    th {
-      color: #a8d0ff;
-      font-weight: 700;
-    }
-    td a {
-      color: #99c9ff;
-    }
-    td.status-confirmed {
-      color: #7eff7e;
-      font-weight: 600;
-    }
-    td.status-pending {
-      color: #ffb366;
-      font-weight: 600;
     }
     .alerts {
       background: rgba(255, 100, 100, 0.15);
@@ -289,25 +220,6 @@ body {
       margin: 0.5rem 0 0 1.2rem;
       color: #ffd0d0;
       font-weight: 400;
-    }
-    .quick-links {
-      margin: 2rem auto;
-      max-width: 700px;
-      background: rgba(50, 100, 255, 0.10);
-      border-radius: 10px;
-      padding: 1rem 1.5rem;
-      color: #a8d0ff;
-      font-size: 1.1rem;
-      box-shadow: 0 2px 8px #3385ff44;
-    }
-    .quick-links a {
-      color: #e0f0ff;
-      margin-right: 1.5rem;
-      text-decoration: underline;
-      font-weight: 600;
-    }
-    .quick-links a:hover {
-      color: #66b2ff;
     }
     footer {
       text-align: center;
@@ -327,7 +239,7 @@ body {
       main {
         padding: 2rem 1rem;
       }
-      .overall-stats {
+      .overall-stats, .stats-grid {
         flex-direction: column;
         align-items: center;
       }
@@ -351,7 +263,6 @@ body {
     <nav>
       <a href="index.html">Dashboard</a>
       <a href="explorer.html">Explorer</a>
-      <a href="validators.html">Validators</a>
       <a href="governance.html">Governance</a>
       <a href="launchpad.html">Launchpad</a>
       <a href="nfts.html">NFTs</a>
@@ -359,7 +270,7 @@ body {
     </nav>
     <div class="wallet-container">
       <button id="connectWalletBtn">Connect Wallet</button>
-      <button id="donateBtn" disabled>Donate 0.001 ETH</button>
+      <button id="exchangePageBtn">Exchange</button>
       <div id="walletDetails" style="margin-left:1rem; color:#a8d0ff; font-size:1.05rem;">
         <span>Wallet: <span id="walletAddress">Not connected</span></span><br>
         <span>Balance: <span id="walletBalance">-- ZYRA</span></span>
@@ -372,10 +283,6 @@ body {
       <div class="stat-card">
         <div class="stat-value" id="darkTps">--</div>
         <div class="stat-label">Transactions per Second</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="darkNodes">--</div>
-        <div class="stat-label">Active Nodes</div>
       </div>
       <div class="stat-card">
         <div class="stat-value" id="darkLatency">-- ms</div>
@@ -404,11 +311,6 @@ body {
         <div class="description">Transactions per second</div>
       </div>
       <div class="stat-card">
-        <h2>Active Nodes</h2>
-        <div class="value" id="activeNodes">--</div>
-        <div class="description">Online Validator Nodes</div>
-      </div>
-      <div class="stat-card">
         <h2>Average Latency</h2>
         <div class="value" id="avgLatency">-- ms</div>
         <div class="description">Network latency</div>
@@ -427,108 +329,48 @@ body {
     <div class="chart-container">
       <canvas id="analyticsChart" height="120"></canvas>
     </div>
-    <div class="nodes-grid" id="nodesGrid"></div>
-    <!-- Buy Zyra Token section removed -->
-
-    <!-- ChatGPT Section -->
-    <div class="chart-container" style="margin-top:2rem;">
-      <h2 style="text-align:center;color:#a8d0ff;">ChatGPT Assistant</h2>
-      <div id="chatPanel" style="background:#1e293b;border-radius:12px;padding:1rem;max-width:600px;margin:0 auto;">
-        <div id="chatMessages" style="min-height:120px;margin-bottom:1rem;"></div>
-        <input id="chatInput" type="text" placeholder="Ask anything about Zyra, blockchain, or crypto..." style="width:80%;padding:0.5rem;border-radius:6px;border:none;" />
-        <button id="chatSendBtn" style="background:#3385ff;color:#fff;border:none;border-radius:8px;padding:0.5rem 1.2rem;font-weight:600;cursor:pointer;margin-left:0.5rem;">Send</button>
-      </div>
-    </div>
     <div class="chart-container" style="margin-top:2rem;">
       <h2 style="text-align:center;color:#a8d0ff;">AI Trading Assistant</h2>
       <div id="aiTradingPanel"></div>
     </div>
-    <div class="chart-container" style="margin-top:2rem;">
-      <h2 style="text-align:center;color:#a8d0ff;">Live NFT Gallery</h2>
-      <div id="nftGallery" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.2rem;"></div>
-    </div>
-    <div class="chart-container" style="margin-top:2rem;">
-      <h2 style="text-align:center;color:#a8d0ff;">Governance Voting</h2>
-      <div id="governanceVotingPanel"></div>
-    </div>
     <div class="alerts" id="alerts"></div>
   </main>
+  <button id="donateBtnBottom" disabled style="
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 1000;
+    background: linear-gradient(90deg,#7eff7e,#3385ff);
+    color: #001f4d;
+    border: 3px solid #00ff88;
+    border-radius: 16px;
+    padding: 1rem 2.2rem;
+    font-weight: 900;
+    font-size: 1.3rem;
+    box-shadow: 0 0 24px #7eff7e99, 0 4px 24px #3385ff77;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s, transform 0.2s, box-shadow 0.3s;
+    outline: 3px solid #00ff88;
+    outline-offset: 3px;
+  ">
+    Donate 0.001 ETH
+  </button>
   <footer>
     © 2025 Zyra Blockchain. All rights reserved.
   </footer>
   <script>
-    // Unlimited Validator Nodes, Real-Time Join/Leave
-    let validatorNodes = [
-      { id: 1, name: 'Validator-1', tps: 21000, online: true, latency: 85, value: 22000 },
-      { id: 2, name: 'Validator-2', tps: 22000, online: true, latency: 120, value: 23000 },
-      { id: 3, name: 'Validator-3', tps: 23000, online: true, latency: 100, value: 21000 },
-      { id: 4, name: 'Validator-4', tps: 25000, online: true, latency: 95, value: 25500 },
-      { id: 5, name: 'Validator-5', tps: 24000, online: true, latency: 110, value: 24500 },
-      { id: 6, name: 'Validator-6', tps: 50000, online: true, latency: 80, value: 50000 }
-    ];
-
-    function renderNodes() {
-      const grid = document.getElementById('nodesGrid');
-      grid.innerHTML = '';
-      validatorNodes.forEach(node => {
-        const card = document.createElement('div');
-        card.className = 'node-card';
-        card.innerHTML = `
-          <h3>${node.name}</h3>
-          <div class="tps">${node.tps.toLocaleString()} TPS</div>
-          <div class="status ${node.online ? 'online' : 'offline'}">${node.online ? 'Online' : 'Offline'}</div>
-          <div style="margin-top:0.5rem;font-size:0.95rem;">Latency: ${node.latency} ms</div>
-          <div style="margin-top:0.5rem;font-size:0.95rem;">Value: ${node.value} ZYRA</div>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    function addValidatorNode() {
-      const id = validatorNodes.length + 1;
-      validatorNodes.push({
-        id,
-        name: `Validator-${id}`,
-        tps: Math.floor(Math.random() * 10000) + 20000,
-        online: true,
-        latency: Math.floor(Math.random() * 50) + 80,
-        value: Math.floor(Math.random() * 10000) + 20000
-      });
-      renderNodes();
-      updateOverallStats();
-    }
-
-    function removeValidatorNode() {
-      if (validatorNodes.length > 1) {
-        validatorNodes.pop();
-        renderNodes();
-        updateOverallStats();
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      renderNodes();
-      updateOverallStats();
-    });
-
-    window.addValidatorNode = undefined;
-    window.removeValidatorNode = undefined;
-
-    function updateOverallStats() {
-      document.getElementById('activeNodes').textContent = validatorNodes.length;
-    }
-
+    // Remove validatorNodes and related logic
     // Advanced Analytics Live Section
     const analyticsCtx = document.getElementById('analyticsChart').getContext('2d');
     const analyticsChart = new Chart(analyticsCtx, {
       type: 'bar',
       data: {
-        labels: ['TPS', 'Nodes', 'Latency', 'Finality'],
+        labels: ['TPS', 'Latency', 'Finality'],
         datasets: [{
           label: 'Live Network Stats',
-          data: [0, 0, 0, 0],
+          data: [0, 0, 0],
           backgroundColor: [
-            '#3385ff', '#7eff7e', '#ffb366', '#a8d0ff'
+            '#3385ff', '#ffb366', '#a8d0ff'
           ]
         }]
       },
@@ -541,84 +383,20 @@ body {
 
     function updateAnalyticsLive() {
       const tps = Math.floor(Math.random() * 1000) + 50000;
-      const nodes = validatorNodes.length;
       const latency = Math.floor(Math.random() * 40) + 80;
       const finality = (Math.random() * 2 + 1).toFixed(2);
 
-      analyticsChart.data.datasets[0].data = [tps, nodes, latency, finality];
+      analyticsChart.data.datasets[0].data = [tps, latency, finality];
       analyticsChart.update();
 
       document.getElementById('totalTps').textContent = tps.toLocaleString();
-      document.getElementById('activeNodes').textContent = nodes;
       document.getElementById('avgLatency').textContent = latency + " ms";
       document.getElementById('finalityTime').textContent = finality + " s";
-      document.getElementById('networkHealth').textContent = (tps > 50000 && latency < 120 && nodes > 5) ? "Excellent" : "Good";
+      document.getElementById('networkHealth').textContent = (tps > 50000 && latency < 120) ? "Excellent" : "Good";
     }
 
     setInterval(updateAnalyticsLive, 3000);
     updateAnalyticsLive();
-
-    // ChatGPT Assistant (real answers using OpenAI API)
-    const chatMessages = document.getElementById('chatMessages');
-    const chatInput = document.getElementById('chatInput');
-    const chatSendBtn = document.getElementById('chatSendBtn');
-
-    function appendChatMessage(sender, text) {
-      const msgDiv = document.createElement('div');
-      msgDiv.style = "margin-bottom:0.7rem;";
-      msgDiv.innerHTML = `<strong style="color:${sender==='You'?'#7eff7e':'#3385ff'}">${sender}:</strong> <span>${text}</span>`;
-      chatMessages.appendChild(msgDiv);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    async function getChatGPTAnswer(question) {
-      // Replace YOUR_OPENAI_API_KEY with your actual OpenAI API key
-      const apiKey = "YOUR_OPENAI_API_KEY";
-      const endpoint = "https://api.openai.com/v1/chat/completions";
-      const payload = {
-        model: "gpt-3.5-turbo",
-        messages: [
-          { role: "system", content: "You are an expert on blockchain and cryptocurrency. Answer questions clearly and concisely." },
-          { role: "user", content: question }
-        ],
-        max_tokens: 256,
-        temperature: 0.7
-      };
-      try {
-        const response = await fetch(endpoint, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${apiKey}`
-          },
-          body: JSON.stringify(payload)
-        });
-        const data = await response.json();
-        if (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
-          return data.choices[0].message.content;
-        } else if (data.error && data.error.message) {
-          return "Error: " + data.error.message;
-        } else {
-          return "Sorry, I couldn't get an answer from ChatGPT.";
-        }
-      } catch (err) {
-        return "Error connecting to ChatGPT API: " + err.message;
-      }
-    }
-
-    chatSendBtn.onclick = async function() {
-      const question = chatInput.value.trim();
-      if (!question) return;
-      appendChatMessage('You', question);
-      chatInput.value = '';
-      appendChatMessage('ChatGPT', 'Typing...');
-      const answer = await getChatGPTAnswer(question);
-      chatMessages.lastChild.innerHTML = `<strong style="color:#3385ff">ChatGPT:</strong> <span>${answer}</span>`;
-    };
-
-    chatInput.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') chatSendBtn.click();
-    });
 
     // AI Trading Assistant
     async function loadAITradingSignals() {
@@ -639,78 +417,6 @@ body {
       document.getElementById('aiTradingPanel').innerHTML = html;
     }
     loadAITradingSignals();
-
-    // Live NFT Gallery
-    function renderNFTGallery() {
-      const gallery = document.getElementById('nftGallery');
-      gallery.innerHTML = '';
-      const nfts = [
-        {
-          name: "Zyra Genesis",
-          desc: "The first NFT minted on Zyra.",
-          img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
-          owner: "0xAb12...4Ef8"
-        },
-        {
-          name: "Validator Badge",
-          desc: "Awarded to top performing validators.",
-          img: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
-          owner: "0xCd34...1A7B"
-        }
-      ];
-      nfts.forEach(nft => {
-        const card = document.createElement('div');
-        card.style = "background:#1e293b;border-radius:12px;padding:1rem;text-align:center;color:#d0e8ff;box-shadow:0 2px 8px #3385ff44;";
-        card.innerHTML = `
-          <img src="${nft.img}" alt="${nft.name}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;margin-bottom:0.7rem;">
-          <div style="font-weight:700;">${nft.name}</div>
-          <div style="font-size:0.95rem;">${nft.desc}</div>
-          <div style="font-size:0.85rem;color:#66b2ff;margin-top:0.5rem;">Owner: ${nft.owner}</div>
-        `;
-        gallery.appendChild(card);
-      });
-    }
-    renderNFTGallery();
-
-    // Governance Voting
-    function renderGovernanceVoting() {
-      const panel = document.getElementById('governanceVotingPanel');
-      panel.innerHTML = '';
-      const proposals = [
-        {
-          id: 1,
-          title: "Increase Block Size",
-          desc: "Proposal to increase the block size from 2MB to 4MB for higher throughput.",
-          status: "active",
-          votesFor: 120,
-          votesAgainst: 45
-        },
-        {
-          id: 2,
-          title: "Reduce Validator Commission",
-          desc: "Proposal to reduce the maximum validator commission from 10% to 7%.",
-          status: "closed",
-          votesFor: 210,
-          votesAgainst: 30
-        }
-      ];
-      proposals.forEach(p => {
-        const div = document.createElement('div');
-        div.style = "background:#1e293b;border-radius:10px;padding:1rem;margin-bottom:1rem;color:#d0e8ff;box-shadow:0 2px 8px #3385ff44;";
-        div.innerHTML = `
-          <div style="font-weight:700;">${p.title}</div>
-          <div style="font-size:0.95rem;">${p.desc}</div>
-          <div style="margin-top:0.7rem;">
-            <button ${p.status !== "active" ? "disabled" : ""}>Vote Yes</button>
-            <button ${p.status !== "active" ? "disabled" : ""}>Vote No</button>
-          </div>
-          <div style="margin-top:0.5rem;font-size:0.85rem;color:#66b2ff;">Yes: ${p.votesFor} | No: ${p.votesAgainst}</div>
-          <div class="status ${p.status}" style="margin-top:0.5rem;">${p.status === "active" ? "Active" : "Closed"}</div>
-        `;
-        panel.appendChild(div);
-      });
-    }
-    renderGovernanceVoting();
 
     // Security Alerts
     function updateAlerts() {
@@ -734,7 +440,7 @@ body {
     const connectWalletBtn = document.getElementById('connectWalletBtn');
     const walletAddressSpan = document.getElementById('walletAddress');
     const walletBalanceSpan = document.getElementById('walletBalance');
-    const donateBtn = document.getElementById('donateBtn');
+    const donateBtnBottom = document.getElementById('donateBtnBottom');
 
     let walletAddress = null;
 
@@ -751,7 +457,7 @@ body {
         walletAddressSpan.textContent = walletAddress.slice(0, 6) + "..." + walletAddress.slice(-4);
         connectWalletBtn.textContent = "Disconnect Wallet";
         connectWalletBtn.disabled = false;
-        donateBtn.disabled = false;
+        donateBtnBottom.disabled = false;
 
         // Get balance
         const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -764,7 +470,7 @@ body {
           walletAddressSpan.textContent = "Not connected";
           walletBalanceSpan.textContent = "-- ZYRA";
           connectWalletBtn.textContent = "Connect Wallet";
-          donateBtn.disabled = true;
+          donateBtnBottom.disabled = true;
           connectWalletBtn.onclick = connectWalletBtn;
         };
       } catch (err) {
@@ -774,8 +480,13 @@ body {
       }
     };
 
-    // Donate button logic (send 0.001 ETH)
-    donateBtn.onclick = async function() {
+    // Exchange page button logic
+    document.getElementById('exchangePageBtn').onclick = function() {
+      window.location.href = "exchange.html";
+    };
+
+    // Donate button logic (send 0.001 ETH) - now at bottom
+    donateBtnBottom.onclick = async function() {
       if (!walletAddress) return;
       try {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -790,68 +501,59 @@ body {
       }
     };
 
-    // Update dark theme dashboard stats
-  function updateDarkDashboard(tps, nodes, latency, finality, health) {
-    document.getElementById('darkTps').textContent = tps.toLocaleString();
-    document.getElementById('darkNodes').textContent = nodes;
-    document.getElementById('darkLatency').textContent = latency + " ms";
-    document.getElementById('darkFinality').textContent = finality + " s";
-    document.getElementById('darkHealth').textContent = health;
-  }
+    // Dark theme chart
+    const darkChartCtx = document.getElementById('darkChart').getContext('2d');
+    const darkChart = new Chart(darkChartCtx, {
+      type: 'line',
+      data: {
+        labels: Array.from({length: 10}, (_, i) => `T-${10-i}`),
+        datasets: [{
+          label: 'TPS',
+          data: Array(10).fill(0),
+          borderColor: '#00ff88',
+          backgroundColor: 'rgba(0,255,136,0.08)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { color: '#00ff88' } }, x: { ticks: { color: '#00ff88' } } }
+      }
+    });
 
-  // Dark theme chart
-  const darkChartCtx = document.getElementById('darkChart').getContext('2d');
-  const darkChart = new Chart(darkChartCtx, {
-    type: 'line',
-    data: {
-      labels: Array.from({length: 10}, (_, i) => `T-${10-i}`),
-      datasets: [{
-        label: 'TPS',
-        data: Array(10).fill(0),
-        borderColor: '#00ff88',
-        backgroundColor: 'rgba(0,255,136,0.08)',
-        fill: true,
-        tension: 0.3
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false } },
-      scales: { y: { beginAtZero: true, ticks: { color: '#00ff88' } }, x: { ticks: { color: '#00ff88' } } }
+    function updateDarkDashboard(tps, latency, finality, health) {
+      document.getElementById('darkTps').textContent = tps.toLocaleString();
+      document.getElementById('darkLatency').textContent = latency + " ms";
+      document.getElementById('darkFinality').textContent = finality + " s";
+      document.getElementById('darkHealth').textContent = health;
     }
-  });
 
-  // Update both dashboards every 3 seconds
-  function updateBothDashboards() {
-    const tps = Math.floor(Math.random() * 1000) + 50000;
-    const nodes = validatorNodes.length;
-    const latency = Math.floor(Math.random() * 40) + 80;
-    const finality = (Math.random() * 2 + 1).toFixed(2);
-    const health = (tps > 50000 && latency < 120 && nodes > 5) ? "Excellent" : "Good";
+    // Update both dashboards every 3 seconds
+    function updateBothDashboards() {
+      const tps = Math.floor(Math.random() * 1000) + 50000;
+      const latency = Math.floor(Math.random() * 40) + 80;
+      const finality = (Math.random() * 2 + 1).toFixed(2);
+      const health = (tps > 50000 && latency < 120) ? "Excellent" : "Good";
 
-    // Update default dashboard
-    document.getElementById('totalTps').textContent = tps.toLocaleString();
-    document.getElementById('activeNodes').textContent = nodes;
-    document.getElementById('avgLatency').textContent = latency + " ms";
-    document.getElementById('finalityTime').textContent = finality + " s";
-    document.getElementById('networkHealth').textContent = health;
+      // Update default dashboard
+      document.getElementById('totalTps').textContent = tps.toLocaleString();
+      document.getElementById('avgLatency').textContent = latency + " ms";
+      document.getElementById('finalityTime').textContent = finality + " s";
+      document.getElementById('networkHealth').textContent = health;
 
-    // Update dark theme dashboard
-    updateDarkDashboard(tps, nodes, latency, finality, health);
+      // Update dark theme dashboard
+      updateDarkDashboard(tps, latency, finality, health);
 
-    // Update dark chart
-    darkChart.data.datasets[0].data.push(tps);
-    if (darkChart.data.datasets[0].data.length > 10) darkChart.data.datasets[0].data.shift();
-    darkChart.update();
-  }
+      // Update dark chart
+      darkChart.data.datasets[0].data.push(tps);
+      if (darkChart.data.datasets[0].data.length > 10) darkChart.data.datasets[0].data.shift();
+      darkChart.update();
+    }
 
-  setInterval(updateBothDashboards, 3000);
-  updateBothDashboards();
-
-  // Exchange page button logic
-  document.getElementById('exchangePageBtn').onclick = function() {
-    window.location.href = "exchange.html";
-  };
+    setInterval(updateBothDashboards, 3000);
+    updateBothDashboards();
   </script>
 </body>
 </html>
