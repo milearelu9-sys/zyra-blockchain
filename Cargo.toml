@@ -1,23 +1,22 @@
 [package]
 name = "zyra"
-version = "0.1.0"
+version = ""
 edition = "2025"
 
 [dependencies]
 # Core async and concurrency
-tokio = { version = "1.32", features = ["full"] }
-rayon = "1.8"
-dashmap = "5.5"
+tokio = { version = ""] }
 
 # Networking & P2P
-libp2p = { version = "0.53", features = ["tcp", "dns", "noise", "yamux", "mdns", "gossipsub", "serde", "websocket"] }
+libp2p = { version = ""] }
+yamux = "0.9"
 
 # Serialization & storage
-serde = { version = "1.0", features = ["derive"] }
+serde = { version = ""] }
 serde_json = "1.0"
-bincode = "2.0"
+bincode = "1.3"
 hex = "0.4"
-rocksdb = "0.21"
+rocksdb = "0.19"
 sled = "0.34"
 
 # Cryptography & security
@@ -28,19 +27,20 @@ bls_signatures = "0.5"
 ring = "0.17"
 zeroize = "1.6"
 argon2 = "0.5"
+secp256k1 = "0.24"
 
 # WASM smart contracts
 wasmtime = "13.0"
 
 # Web server & APIs
-axum = { version = "0.7", features = ["headers", "ws", "macros"] }
+axum = { version = ""] }
 
 # Observability & metrics
+prometheus = "0.13"
 tracing = "0.1"
-tracing-subscriber = { version = "0.3", features = ["fmt", "env-filter"] }
-opentelemetry = { version = "0.21", features = ["rt-tokio"] }
-prometheus = "0.14"
-metrics = "0.21"
+tracing-subscriber = { version = ""] }
+metrics = "0.20"
+metrics-exporter-prometheus = "0.11"
 
 # Time & utilities
 chrono = "0.4"
@@ -55,3 +55,8 @@ criterion = "0.5"
 
 # Remove warp unless you need it for legacy endpoints
 # warp = "0.3"
+
+[dev-dependencies]
+tokio = { version = ""] }
+tempfile = "3.2"
+serial_test = "0.5"
