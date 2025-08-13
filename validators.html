@@ -262,17 +262,38 @@
       <a href="launchpad.html">Launchpad</a>
       <a href="nfts.html">NFTs</a>
       <a href="docs.html">Docs</a>
+      <button class="nav-btn" onclick="window.location.href='exchange.html'">Exchange</button>
     </nav>
   </header>
   <main>
     <h1>Zyra Blockchain Validators</h1>
+    <div style="text-align:center;margin-bottom:2rem;">
+      <button id="refreshBtn" class="nav-btn" style="background:linear-gradient(90deg,#3385ff,#7eff7e);color:#001f4d;">Refresh</button>
+      <button id="exportBtn" class="nav-btn" style="background:linear-gradient(90deg,#ffb366,#3385ff);color:#001f4d;margin-left:1rem;">Export List</button>
+      <button id="addValidatorBtn" class="nav-btn" style="background:linear-gradient(90deg,#7eff7e,#3385ff);color:#001f4d;margin-left:1rem;">Add Validator</button>
+    </div>
     <div class="validators-grid" id="validatorsGrid">
       <!-- Validator cards will be rendered here -->
+    </div>
+    <div style="margin-top:2rem;">
+      <h2 style="color:#a8d0ff;text-align:center;">Live Validator Analytics</h2>
+      <canvas id="validatorChart" height="120"></canvas>
+      <div id="liveValidatorStats" style="text-align:center;margin-top:1rem;font-size:1.1rem;color:#7eff7e;"></div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem;">
+      <button class="nav-btn" onclick="window.location.href='index.html'">← Back to Dashboard</button>
+      <button class="nav-btn" onclick="window.location.href='explorer.html'">Explorer</button>
+      <button class="nav-btn" onclick="window.location.href='governance.html'">Governance</button>
+      <button class="nav-btn" onclick="window.location.href='launchpad.html'">Launchpad</button>
+      <button class="nav-btn" onclick="window.location.href='nfts.html'">NFTs</button>
+      <button class="nav-btn" onclick="window.location.href='docs.html'">Docs</button>
+      <button class="nav-btn" onclick="window.location.href='exchange.html'">Exchange</button>
     </div>
   </main>
   <footer>
     © 2025 Zyra Blockchain. All rights reserved.
   </footer>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     // Simulate 5 validator nodes with advanced live stats and TPS always above 50,000
     const validators = [
@@ -292,32 +313,155 @@
       });
     }
 
+    function updateLiveStats() {
+      const online = validators.filter(v => v.online).length;
+      const avgTPS = Math.round(validators.reduce((a, v) => a + v.tps, 0) / validators.length);
+      const avgLatency = Math.round(validators.reduce((a, v) => a + v.latency, 0) / validators.length);
+      document.getElementById('liveValidatorStats').innerHTML =
+        `<span style="margin-right:2em;">Online: <b>${online}</b></span>
+         <span style="margin-right:2em;">Avg TPS: <b>${avgTPS}</b></span>
+         <span>Avg Latency: <b>${avgLatency} ms</b></span>`;
+    }
+
     function renderValidators() {
       const grid = document.getElementById('validatorsGrid');
       grid.innerHTML = '';
-      validators.forEach(node => {
+      validators.forEach((node, idx) => {
         const card = document.createElement('div');
         card.className = 'validator-card';
+        card.style.animation = `fadeInCard 0.7s ${idx * 0.1}s both`;
         card.innerHTML = `
-          <h3>${node.name}</h3>
+          <h3>${node.name} ${node.online ? "🟢" : "🔴"}</h3>
           <div class="tps">${node.online ? node.tps.toLocaleString() : '--'} TPS</div>
           <div class="status ${node.online ? 'online' : 'offline'}">${node.online ? 'Online' : 'Offline'}</div>
           <div class="description">Latency: ${node.online ? node.latency + ' ms' : '--'}</div>
           <div class="description">Commission: ${node.commission}</div>
           <div class="description">Uptime: ${node.uptime}</div>
+          <button class="nav-btn" onclick="stakeValidator(${idx})">Stake</button>
+          <button class="nav-btn" style="background:linear-gradient(90deg,#ffb366,#3385ff);color:#001f4d;margin-top:0.5rem;" onclick="showDetails(${idx})">Details</button>
         `;
         grid.appendChild(card);
       });
+      updateLiveStats();
+    }
+
+    // Add fade-in animation for cards and nav-btn style
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @keyframes fadeInCard {
+        from { opacity: 0; transform: translateY(30px);}
+        to { opacity: 1; transform: translateY(0);}
+      }
+      .nav-btn {
+        background: linear-gradient(90deg,#3385ff,#7eff7e);
+        color: #001f4d;
+        border: none;
+        border-radius: 8px;
+        padding: 0.45rem 1.1rem;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        min-width: 120px;
+        box-shadow: 0 2px 8px #3385ff44;
+        transition: background 0.3s, color 0.3s, transform 0.2s;
+        margin-bottom: 0.5rem;
+        margin-right: 0.5rem;
+      }
+      .nav-btn:hover {
+        background: linear-gradient(90deg,#7eff7e,#3385ff);
+        color: #181f2a;
+        transform: scale(1.06);
+      }
+    `;
+    document.head.appendChild(style);
+
+    window.stakeValidator = function(idx) {
+      const amount = prompt("Enter amount to stake (ZYRA):");
+      if (amount && !isNaN(amount) && Number(amount) > 0) {
+        alert(`Staked ${amount} ZYRA on ${validators[idx].name}!`);
+      }
+    };
+
+    window.showDetails = function(idx) {
+      const node = validators[idx];
+      alert(`Validator: ${node.name}\nTPS: ${node.tps}\nStatus: ${node.online ? "Online" : "Offline"}\nLatency: ${node.latency} ms\nCommission: ${node.commission}\nUptime: ${node.uptime}`);
+    };
+
+    document.getElementById('refreshBtn').addEventListener('click', () => {
+      randomizeValidatorStats();
+      renderValidators();
+      updateValidatorChart();
+    });
+
+    document.getElementById('exportBtn').addEventListener('click', () => {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(validators, null, 2));
+      const dlAnchor = document.createElement('a');
+      dlAnchor.setAttribute("href", dataStr);
+      dlAnchor.setAttribute("download", "zyra-validators.json");
+      dlAnchor.click();
+    });
+
+    document.getElementById('addValidatorBtn').addEventListener('click', () => {
+      const name = prompt("Validator Name:");
+      if (!name) return;
+      validators.push({
+        id: validators.length + 1,
+        name,
+        tps: Math.floor(Math.random() * 1000) + 50000,
+        online: true,
+        latency: Math.floor(Math.random() * 21) + 80,
+        commission: (Math.random() * 2 + 4).toFixed(2) + "%",
+        uptime: (99.5 + Math.random() * 0.5).toFixed(2) + "%"
+      });
+      renderValidators();
+      updateValidatorChart();
+    });
+
+    // Live Validator Analytics Chart
+    const ctx = document.getElementById('validatorChart').getContext('2d');
+    const validatorChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: validators.map(v => v.name),
+        datasets: [
+          {
+            label: 'TPS',
+            data: validators.map(v => v.tps),
+            backgroundColor: '#7eff7e'
+          },
+          {
+            label: 'Latency',
+            data: validators.map(v => v.latency),
+            backgroundColor: '#3385ff'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: true } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+
+    function updateValidatorChart() {
+      validatorChart.data.labels = validators.map(v => v.name);
+      validatorChart.data.datasets[0].data = validators.map(v => v.tps);
+      validatorChart.data.datasets[1].data = validators.map(v => v.latency);
+      validatorChart.update();
+      updateLiveStats();
     }
 
     // Initial render
     renderValidators();
+    updateValidatorChart();
 
     // Live update every 4 seconds
     setInterval(() => {
       randomizeValidatorStats();
       renderValidators();
+      updateValidatorChart();
     }, 4000);
   </script>
 </body>
 </html>
+
