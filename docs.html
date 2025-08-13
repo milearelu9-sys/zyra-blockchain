@@ -1,170 +1,735 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Zyra Blockchain Docs</title>
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0047ab 0%, #001f4d 100%);
-      color: #d0e8ff;
-      margin: 0;
-      min-height: 100vh;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zyra Documentation</title>
+    <style>
+        body {
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #0047ab 0%, #001f4d 100%);
+            color: #d0e8ff;
+            margin: 0;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
 
-    header {
-      padding: 1rem 3rem;
-      background: rgba(0, 71, 171, 0.9);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+        /* Update container layout */
+        .docs-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 1rem auto;
+            padding: 0 1rem;
+            height: calc(100vh - 80px); /* Adjust for header height */
+        }
 
-    .logo {
-      font-weight: 700;
-      font-size: 1.6rem;
-      color: #a8d0ff;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-    }
+        /* Improve sidebar styling */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            background: rgba(30, 60, 130, 0.7);
+            border-radius: 15px;
+            padding: 1.5rem;
+            height: calc(100vh - 100px);
+            position: sticky;
+            top: 1rem;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(51, 133, 255, 0.5) transparent;
+        }
 
-    nav {
-      display: flex;
-      gap: 2rem;
-    }
+        /* Custom scrollbar for sidebar */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
 
-    nav a {
-      font-weight: 600;
-      font-size: 1rem;
-      color: #a8d0ff;
-      text-decoration: none;
-      padding: 0.3rem 0.5rem;
-      border-radius: 4px;
-      transition: background-color 0.3s ease;
-    }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
 
-    nav a:hover {
-      background-color: #3385ffcc;
-      color: #001f4d;
-    }
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: rgba(51, 133, 255, 0.5);
+            border-radius: 3px;
+        }
 
-    main {
-      max-width: 900px;
-      margin: 2rem auto;
-      background: rgba(30, 60, 130, 0.7);
-      border-radius: 15px;
-      padding: 2rem;
-      box-shadow: 0 0 20px #3399ffbb;
-    }
+        /* Improve main content area */
+        .content {
+            background: rgba(30, 60, 130, 0.7);
+            border-radius: 15px;
+            padding: 2rem;
+            overflow-y: auto;
+            height: calc(100vh - 100px);
+            scrollbar-width: thin;
+            scrollbar-color: rgba(51, 133, 255, 0.5) transparent;
+        }
 
-    h1 {
-      color: #a8d0ff;
-      font-size: 2.2rem;
-      margin-bottom: 1.5rem;
-      text-align: center;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-    }
+        /* Custom scrollbar for content */
+        .content::-webkit-scrollbar {
+            width: 6px;
+        }
 
-    .docs-section {
-      margin-bottom: 2rem;
-    }
+        .content::-webkit-scrollbar-track {
+            background: transparent;
+        }
 
-    .docs-section h2 {
-      color: #66b2ff;
-      font-size: 1.3rem;
-      margin-bottom: 0.7rem;
-      font-weight: 700;
-    }
+        .content::-webkit-scrollbar-thumb {
+            background-color: rgba(51, 133, 255, 0.5);
+            border-radius: 3px;
+        }
 
-    .docs-section p, .docs-section ul {
-      color: #e0f0ff;
-      font-size: 1.05rem;
-      margin-bottom: 0.7rem;
-    }
+        /* Header adjustments */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(0, 31, 77, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            margin-bottom: 1rem;
+        }
 
-    .docs-section ul {
-      padding-left: 1.5rem;
-    }
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #a8d0ff;
+        }
 
-    .docs-section li {
-      margin-bottom: 0.4rem;
-    }
+        .logo svg {
+            margin-right: 0.5rem;
+        }
 
-    footer {
-      text-align: center;
-      padding: 1rem 0;
-      font-weight: 500;
-      font-size: 0.9rem;
-      color: #a0c4ffbb;
-      background: rgba(0, 31, 77, 0.8);
-      letter-spacing: 0.08em;
-      margin-top: 2rem;
-    }
-  </style>
+        /* Navigation buttons container */
+        nav {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 0.5rem 0;
+        }
+
+        nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        nav a {
+            background: linear-gradient(90deg, #3385ff, #7eff7e);
+            color: #001f4d;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(51, 133, 255, 0.4);
+        }
+
+        /* Updated button styles to match exchange button */
+        .nav-btn, .doc-nav-btn, .copy-btn, .theme-toggle {
+            background: linear-gradient(90deg, #3385ff, #7eff7e);
+            color: #001f4d;
+            border: none;
+            border-radius: 8px;
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover, .doc-nav-btn:hover, .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(51, 133, 255, 0.4);
+        }
+
+        /* Override specific button styles */
+        .doc-nav-btn {
+            width: 100%;
+            text-align: left;
+            margin: 0.5rem 0;
+            background: rgba(51, 133, 255, 0.2);
+            color: #d0e8ff;
+        }
+
+        .doc-nav-btn.active {
+            background: linear-gradient(90deg, #3385ff, #7eff7e);
+            color: #001f4d;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-container {
+            margin-top: auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(51, 133, 255, 0.2);
+        }
+
+        .search-input {
+            background: linear-gradient(90deg, rgba(51, 133, 255, 0.2), rgba(126, 255, 126, 0.2));
+            border: 1px solid rgba(51, 133, 255, 0.3);
+            color: #d0e8ff;
+            width: 100%;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3385ff;
+            box-shadow: 0 0 0 2px rgba(51, 133, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Version selector styling to match buttons */
+        .version-selector {
+            width: 100%;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(51, 133, 255, 0.3);
+            background: linear-gradient(90deg, rgba(51, 133, 255, 0.2), rgba(126, 255, 126, 0.2));
+            color: #d0e8ff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .version-selector:hover {
+            border-color: #3385ff;
+            transform: translateY(-2px);
+        }
+
+        .code-block {
+            position: relative;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(51, 133, 255, 0.2);
+        }
+
+        /* Active state enhancement */
+        .doc-nav-btn.active:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(51, 133, 255, 0.4);
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: linear-gradient(90deg, #3385ff, #7eff7e);
+            color: #001f4d;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(51, 133, 255, 0.4);
+        }
+
+        .version-selector {
+            background: rgba(0, 31, 77, 0.5);
+            border: 1px solid rgba(51, 133, 255, 0.3);
+            color: #d0e8ff;
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            width: 100%;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(90deg, #3385ff, #7eff7e);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg);
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            background: rgba(51, 133, 255, 0.9);
+            color: #fff;
+            transform: translateY(100px);
+            transition: transform 0.3s;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+        }
+
+        .nav-section {
+            margin: 1.5rem 0;
+            padding-top: 0.8rem;
+        }
+
+        .nav-section h3 {
+            color: #a8d0ff;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .doc-nav-btn {
+            width: 100%;
+            text-align: left;
+            margin: 0.5rem 0;
+            background: linear-gradient(90deg, #3385ff, #7eff7e);
+            color: #001f4d;
+            border: none;
+            border-radius: 8px;
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .doc-nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(51, 133, 255, 0.4);
+        }
+
+        .doc-nav-btn.active {
+            background: linear-gradient(90deg, #7eff7e, #3385ff);
+        }
+
+        /* Mobile menu styles */
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: #a8d0ff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            /* Stack logo and nav items */
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .logo {
+                margin-bottom: 1rem;
+            }
+
+            nav {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                gap: 0;
+            }
+
+            nav.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .docs-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .sidebar {
+                position: static;
+                height: auto;
+                padding: 1rem;
+                border-radius: 15px 15px 0 0;
+                overflow: visible;
+            }
+
+            .content {
+                padding: 1rem;
+            }
+        }
+
+        /* Add these styles to your existing CSS */
+        .content-card {
+            background: rgba(51, 133, 255, 0.1);
+            border: 1px solid rgba(51, 133, 255, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .network-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .network-table th,
+        .network-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border: 1px solid rgba(51, 133, 255, 0.2);
+        }
+
+        .network-table th {
+            background: rgba(51, 133, 255, 0.2);
+            font-weight: 600;
+        }
+
+        .next-steps {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .next-steps .doc-nav-btn {
+            background: linear-gradient(90deg, #3385ff, #7eff7e);
+            color: #001f4d;
+        }
+
+        h3 {
+            color: #a8d0ff;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .code-block {
+            margin: 1rem 0;
+        }
+
+        .code-block code {
+            display: block;
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            line-height: 1.5;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="logo">ZYRA</div>
-    <nav>
-      <a href="index.html">Dashboard</a>
-      <a href="explorer.html">Explorer</a>
-      <a href="validators.html">Validators</a>
-      <a href="governance.html">Governance</a>
-      <a href="launchpad.html">Launchpad</a>
-      <a href="nfts.html">NFTs</a>
-      <a href="docs.html">Docs</a>
-    </nav>
-  </header>
-  <main>
-    <h1>Zyra Blockchain Documentation</h1>
-    <div class="docs-section">
-      <h2>Getting Started</h2>
-      <p>
-        Welcome to Zyra! Zyra is a high-performance, multi-chain blockchain platform supporting smart contracts, NFTs, and decentralized governance.
-      </p>
-      <ul>
-        <li>Connect your wallet to interact with Zyra dApps.</li>
-        <li>Explore blocks, transactions, and validators in the Explorer.</li>
-        <li>Participate in governance and vote on proposals.</li>
-        <li>Mint and manage NFTs on the NFT page.</li>
-        <li>Join new token launches via the Launchpad.</li>
-      </ul>
+    <header>
+        <div class="logo">
+            <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="19" cy="19" r="18" stroke="#3385ff" stroke-width="2" fill="#0047ab"/>
+                <path d="M19 8L25 19H13L19 8Z" fill="#a8d0ff"/>
+                <circle cx="19" cy="25" r="4" fill="#66b2ff"/>
+            </svg>
+            ZYRA
+        </div>
+        <button class="mobile-menu-btn" onclick="toggleSidebar()" aria-label="Toggle menu">
+            ☰
+        </button>
+        <nav>
+            <button class="nav-btn" onclick="window.location.href='index.html'">Dashboard</button>
+            <button class="nav-btn" onclick="window.location.href='explorer.html'">Explorer</button>
+            <button class="nav-btn" onclick="window.location.href='validators.html'">Validators</button>
+            <button class="nav-btn" onclick="window.location.href='governance.html'">Governance</button>
+            <button class="nav-btn" onclick="window.location.href='launchpad.html'">Launchpad</button>
+            <button class="nav-btn" onclick="window.location.href='nfts.html'">NFTs</button>
+            <button class="nav-btn" onclick="window.location.href='docs.html'">Docs</button>
+            <button class="nav-btn" onclick="window.location.href='exchange.html'">Exchange</button>
+        </nav>
+    </header>
+
+    <div class="docs-container">
+        <nav class="sidebar">
+            <select class="version-selector">
+                <option value="latest">v1.0.0 (Latest)</option>
+                <option value="0.9.0">v0.9.0</option>
+                <option value="0.8.0">v0.8.0</option>
+            </select>
+
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search documentation...">
+            </div>
+
+            <!-- Smart Contract Section -->
+            <div class="nav-section">
+                <h3>Smart Contracts</h3>
+                <button class="doc-nav-btn" onclick="window.location.href='contracts/deploy.html'">Deploy Contract</button>
+                <button class="doc-nav-btn" onclick="window.location.href='contracts/interact.html'">Interact</button>
+                <button class="doc-nav-btn" onclick="window.location.href='contracts/verify.html'">Verify Contract</button>
+                <button class="doc-nav-btn" onclick="window.location.href='contracts/audit.html'">Audit Tools</button>
+            </div>
+
+            <!-- Documentation Navigation -->
+            <div class="nav-section">
+                <h3>Documentation</h3>
+                <button class="doc-nav-btn active" data-section="getting-started">Getting Started</button>
+                <button class="doc-nav-btn" data-section="installation">Installation</button>
+                <button class="doc-nav-btn" data-section="api-reference">API Reference</button>
+                <button class="doc-nav-btn" data-section="staking">Staking Guide</button>
+                <button class="doc-nav-btn" data-section="governance">Governance</button>
+                <button class="doc-nav-btn" data-section="faq">FAQ</button>
+            </div>
+        </nav>
+
+        <main class="content">
+            <section id="getting-started">
+                <h2>Getting Started with Zyra</h2>
+                
+                <div class="content-card">
+                    <h3>1. Installation</h3>
+                    <div class="code-block">
+                        <button class="copy-btn">Copy</button>
+                        <pre><code># Install Zyra Core and Client Libraries
+npm install @zyra/core @zyra/client
+
+# Install CLI Tools
+npm install -g @zyra/cli</code></pre>
+                    </div>
+
+                    <h3>2. Quick Start</h3>
+                    <div class="code-block">
+                        <button class="copy-btn">Copy</button>
+                        <pre><code>import { ZyraClient } from '@zyra/client';
+
+const zyra = new ZyraClient({
+    network: 'mainnet',
+    apiKey: 'YOUR_API_KEY'
+});
+
+// Connect to wallet
+await zyra.connect();</code></pre>
+                    </div>
+
+                    <h3>3. Create Your First Smart Contract</h3>
+                    <div class="code-block">
+                        <button class="copy-btn">Copy</button>
+                        <pre><code>// MyToken.sol
+pragma solidity ^0.8.0;
+
+import "@zyra/contracts/token/ZRC20/ZRC20.sol";
+
+contract MyToken is ZRC20 {
+    constructor() ZRC20("MyToken", "MTK") {
+        _mint(msg.sender, 1000000 * 10**decimals());
+    }</code></pre>
+                    </div>
+
+                    <h3>4. Deploy Using Zyra CLI</h3>
+                    <div class="code-block">
+                        <button class="copy-btn">Copy</button>
+                        <pre><code>// Deploy to testnet
+zyra deploy MyToken.sol --network testnet
+
+// Deploy to mainnet
+zyra deploy MyToken.sol --network mainnet</code></pre>
+                    </div>
+
+                    <h3>5. Interact with Your Contract</h3>
+                    <div class="code-block">
+                        <button class="copy-btn">Copy</button>
+                        <pre><code>const contract = await zyra.loadContract('YOUR_CONTRACT_ADDRESS');
+
+// Send tokens
+await contract.transfer('RECIPIENT_ADDRESS', '1000000000000000000');
+
+// Check balance
+const balance = await contract.balanceOf('ADDRESS');
+console.log(`Balance: ${zyra.utils.formatUnits(balance, 18)} MTK`);</code></pre>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <h3>Network Details</h3>
+                    <table class="network-table">
+                        <tr>
+                            <th>Network</th>
+                            <th>Chain ID</th>
+                            <th>RPC URL</th>
+                        </tr>
+                        <tr>
+                            <td>Mainnet</td>
+                            <td>1337</td>
+                            <td>https://rpc.zyra.network</td>
+                        </tr>
+                        <tr>
+                            <td>Testnet</td>
+                            <td>1338</td>
+                            <td>https://testnet.zyra.network</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="content-card">
+                    <h3>Next Steps</h3>
+                    <ul class="next-steps">
+                        <li>
+                            <button class="doc-nav-btn" data-section="smart-contracts">
+                                📝 Explore Smart Contracts
+                            </button>
+                        </li>
+                        <li>
+                            <button class="doc-nav-btn" data-section="staking">
+                                🏦 Learn about Staking
+                            </button>
+                        </li>
+                        <li>
+                            <button class="doc-nav-btn" data-section="governance">
+                                🏛️ Participate in Governance
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="api-reference">
+                <h2>API Reference</h2>
+                <h3>WebSocket API</h3>
+                <div class="code-block">
+                    <button class="copy-btn">Copy</button>
+                    <pre><code>const ws = new WebSocket('wss://api.zyra.network');
+ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    console.log(data);
+};</code></pre>
+                </div>
+            </section>
+
+            <!-- Add more sections as needed -->
+        </main>
     </div>
-    <div class="docs-section">
-      <h2>Core Features</h2>
-      <ul>
-        <li><strong>Multi-chain Support:</strong> Interact with multiple blockchains.</li>
-        <li><strong>Smart Contracts:</strong> Deploy and use smart contracts.</li>
-        <li><strong>NFTs:</strong> Mint, transfer, and view NFTs.</li>
-        <li><strong>Governance:</strong> Decentralized voting and proposals.</li>
-        <li><strong>Validator Nodes:</strong> High-performance, secure consensus.</li>
-      </ul>
-    </div>
-    <div class="docs-section">
-      <h2>API Reference</h2>
-      <ul>
-        <li><strong>RPC Endpoint:</strong> <code>https://rpc.zyra.network</code></li>
-        <li><strong>Get Block:</strong> <code>/block/{blockNumber}</code></li>
-        <li><strong>Get Transaction:</strong> <code>/tx/{txHash}</code></li>
-        <li><strong>Get Validator:</strong> <code>/validator/{id}</code></li>
-      </ul>
-    </div>
-    <div class="docs-section">
-      <h2>Support & Community</h2>
-      <p>
-        For help, join our community channels or contact support:
-      </p>
-      <ul>
-        <li><a href="#">Discord</a></li>
-        <li><a href="#">Telegram</a></li>
-        <li><a href="#">GitHub</a></li>
-      </ul>
-    </div>
-  </main>
-  <footer>
-    © 2025 Zyra Blockchain. All rights reserved.
-  </footer>
+
+    <button class="theme-toggle nav-btn" aria-label="Toggle theme">
+        <span style="font-size: 1.2rem;">🌓</span>
+    </button>
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Copy button functionality
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const code = btn.nextElementSibling.textContent;
+                navigator.clipboard.writeText(code);
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = 'Copy', 2000);
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Enhanced navigation
+        document.querySelectorAll('.doc-nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.doc-nav-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const section = document.getElementById(btn.dataset.section);
+                section.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.querySelector('.search-input');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const sections = document.querySelectorAll('section');
+            
+            sections.forEach(section => {
+                const text = section.textContent.toLowerCase();
+                const display = text.includes(searchTerm) ? 'block' : 'none';
+                section.style.display = display;
+            });
+        });
+
+        // Version selector
+        document.querySelector('.version-selector').addEventListener('change', (e) => {
+            showNotification(`Switched to version ${e.target.value}`);
+        });
+
+        // Theme toggle
+        let isDark = true;
+        document.querySelector('.theme-toggle').addEventListener('click', () => {
+            isDark = !isDark;
+            document.body.style.background = isDark 
+                ? 'linear-gradient(135deg, #0047ab 0%, #001f4d 100%)'
+                : 'linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)';
+            document.body.style.color = isDark ? '#d0e8ff' : '#001f4d';
+            showNotification(`Switched to ${isDark ? 'dark' : 'light'} theme`);
+        });
+
+        // Notification system
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => notification.classList.remove('show'), 3000);
+        }
+
+        // Code highlighting
+        document.querySelectorAll('pre code').forEach(block => {
+            block.innerHTML = block.innerHTML
+                .replace(/([A-Za-z_][A-Za-z0-9_]*)\(/g, '<span style="color: #7eff7e">$1</span>(')
+                .replace(/(const|let|var|function|return|new)/g, '<span style="color: #ff7e7e">$1</span>')
+                .replace(/'([^']*)'/g, '<span style="color: #ffff7e">\'$1\'</span>');
+        });
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            const sidebar = document.querySelector('.sidebar');
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            
+            if (!sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>
