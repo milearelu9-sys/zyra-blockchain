@@ -1,321 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Zyra Blockchain Governance</title>
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0047ab 0%, #001f4d 100%);
-      color: #d0e8ff;
-      margin: 0;
-      min-height: 100vh;
-    }
-    header {
-      padding: 1rem 3rem;
-      background: rgba(0, 71, 171, 0.9);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .logo {
-      font-weight: 700;
-      font-size: 1.6rem;
-      color: #a8d0ff;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-    }
-    nav {
-      display: flex;
-      gap: 2rem;
-    }
-    nav a {
-      font-weight: 600;
-      font-size: 1rem;
-      color: #a8d0ff;
-      text-decoration: none;
-      padding: 0.3rem 0.5rem;
-      border-radius: 4px;
-      transition: background-color 0.3s ease;
-    }
-    nav a:hover {
-      background-color: #3385ffcc;
-      color: #001f4d;
-    }
-    main {
-      max-width: 900px;
-      margin: 2rem auto;
-      background: rgba(30, 60, 130, 0.7);
-      border-radius: 15px;
-      padding: 2rem;
-      box-shadow: 0 0 20px #3399ffbb;
-    }
-    h1 {
-      color: #a8d0ff;
-      font-size: 2.2rem;
-      margin-bottom: 1.5rem;
-      text-align: center;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-    }
-    .proposal-list {
-      margin-bottom: 2rem;
-    }
-    .proposal-card {
-      background: rgba(50, 100, 255, 0.15);
-      border-radius: 10px;
-      padding: 1.5rem 1.8rem;
-      box-shadow: 0 2px 8px #3385ff44;
-      color: #cce4ff;
-      margin-bottom: 1.2rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      transition: box-shadow 0.3s ease;
-      cursor: default;
-    }
-    .proposal-card:hover {
-      box-shadow: 0 0 25px #66b2ffcc;
-    }
-    .proposal-card h3 {
-      margin: 0 0 0.5rem 0;
-      font-weight: 700;
-      font-size: 1.3rem;
-      color: #66b2ff;
-    }
-    .proposal-card .details {
-      font-size: 0.98rem;
-      color: #a0c4ffbb;
-      margin-bottom: 0.7rem;
-    }
-    .proposal-card .status {
-      font-weight: 600;
-      color: #7eff7e;
-      margin-bottom: 0.7rem;
-    }
-    .proposal-card .status.closed {
-      color: #ff7e7e;
-    }
-    .proposal-card .status.active {
-      color: #ffb366;
-    }
-    .proposal-card button {
-      background: #1e3c82;
-      color: #a8d0ff;
-      border: 1.5px solid #3385ff;
-      border-radius: 8px;
-      padding: 0.6rem 1.2rem;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      margin-top: 0.5rem;
-    }
-    .proposal-card button:hover {
-      background-color: #3385ff;
-      color: #001f4d;
-    }
-    .vote-count {
-      margin-top: 0.5rem;
-      font-size: 1rem;
-      color: #e0f0ff;
-    }
-    footer {
-      text-align: center;
-      padding: 1rem 0;
-      font-weight: 500;
-      font-size: 0.9rem;
-      color: #a0c4ffbb;
-      background: rgba(0, 31, 77, 0.8);
-      letter-spacing: 0.08em;
-      margin-top: 2rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zyra Governance</title>
+    <style>
+        body {
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #0047ab 0%, #001f4d 100%);
+            color: #d0e8ff;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .proposal-card {
+            background: rgba(30, 60, 130, 0.7);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.5s;
+        }
+
+        .proposal-status {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .status-active {
+            background: #7eff7e33;
+            color: #7eff7e;
+        }
+
+        .status-pending {
+            background: #ffb36633;
+            color: #ffb366;
+        }
+
+        .vote-bar {
+            background: rgba(0, 71, 171, 0.3);
+            height: 30px;
+            border-radius: 15px;
+            margin: 1rem 0;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .vote-yes {
+            background: #7eff7e;
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .vote-no {
+            background: #ff7e7e;
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .vote-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .vote-btn {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .vote-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-yes {
+            background: #7eff7e;
+            color: #001f4d;
+        }
+
+        .btn-no {
+            background: #ff7e7e;
+            color: #001f4d;
+        }
+
+        .create-proposal {
+            background: rgba(30, 60, 130, 0.7);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .create-proposal input,
+        .create-proposal textarea {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            background: rgba(0, 71, 171, 0.3);
+            border: 1px solid #3385ff;
+            border-radius: 8px;
+            color: #d0e8ff;
+        }
+
+        .return-btn {
+            background: linear-gradient(90deg, #3385ff, #7eff7e);
+            color: #001f4d;
+            border: none;
+            border-radius: 8px;
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .return-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(51, 133, 255, 0.4);
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin: 3rem 0 2rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, #3385ff, #7eff7e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .proposals-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="logo">ZYRA</div>
-    <nav>
-      <a href="index.html">Dashboard</a>
-      <a href="explorer.html">Explorer</a>
-      <a href="validators.html">Validators</a>
-      <a href="governance.html">Governance</a>
-      <a href="launchpad.html">Launchpad</a>
-      <a href="nfts.html">NFTs</a>
-      <a href="docs.html">Docs</a>
-    </nav>
-  </header>
-  <main>
-    <h1>Zyra Blockchain Governance</h1>
-    <div class="proposal-list" id="proposalList">
-      <!-- Proposals will be rendered here -->
-    </div>
-    <div class="create-proposal-panel" id="createProposalPanel" style="margin-top:2rem;background:rgba(50,100,255,0.10);border-radius:12px;padding:1.5rem;">
-      <h2 style="color:#a8d0ff;margin-bottom:1rem;">Create New Proposal</h2>
-      <input id="newTitle" type="text" placeholder="Proposal Title" style="width:100%;margin-bottom:0.7rem;padding:0.5rem;border-radius:6px;border:none;" />
-      <textarea id="newDetails" placeholder="Proposal Details" style="width:100%;margin-bottom:0.7rem;padding:0.5rem;border-radius:6px;border:none;"></textarea>
-      <input id="newEndDate" type="date" style="margin-bottom:0.7rem;padding:0.5rem;border-radius:6px;border:none;" />
-      <button id="submitProposalBtn" style="background:#3385ff;color:#fff;border:none;border-radius:8px;padding:0.7rem 1.5rem;font-weight:600;font-size:1rem;cursor:pointer;">Submit Proposal</button>
-      <div id="proposalStatus" style="margin-top:0.7rem;color:#7eff7e;"></div>
-    </div>
-    <div class="analytics-section" style="margin-top:2rem;">
-      <h2 style="text-align:center;color:#a8d0ff;">Governance Analytics</h2>
-      <canvas id="governanceChart" height="120"></canvas>
-    </div>
-  </main>
-  <footer>
-    © 2025 Zyra Blockchain. All rights reserved.
-  </footer>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    // Example governance proposals (can be loaded from backend)
-    let proposals = [
-      {
-        id: 1,
-        title: "Increase Block Size",
-        details: "Proposal to increase the block size from 2MB to 4MB for higher throughput.",
-        status: "active",
-        ends: "2025-08-20",
-        votesFor: 120,
-        votesAgainst: 45,
-        voters: []
-      },
-      {
-        id: 2,
-        title: "Reduce Validator Commission",
-        details: "Proposal to reduce the maximum validator commission from 10% to 7%.",
-        status: "closed",
-        ended: "2025-07-30",
-        votesFor: 210,
-        votesAgainst: 30,
-        voters: []
-      },
-      {
-        id: 3,
-        title: "Add NFT Marketplace",
-        details: "Proposal to integrate a decentralized NFT marketplace into Zyra.",
-        status: "active",
-        ends: "2025-08-25",
-        votesFor: 95,
-        votesAgainst: 12,
-        voters: []
-      }
-    ];
+    <button class="return-btn" onclick="window.location.href='index.html'">
+        Return to Dashboard
+    </button>
+    
+    <header>
+        <!-- Include your existing header -->
+    </header>
 
-    // Advanced: Track user votes and prevent double voting
-    let userAddress = localStorage.getItem("zyra_user") || ("0x" + Math.random().toString(16).slice(2, 10) + Math.random().toString(16).slice(2, 10));
-    localStorage.setItem("zyra_user", userAddress);
+    <h1 class="page-title">Governance</h1>
 
-    function renderGovernance() {
-      const list = document.getElementById('proposalList');
-      list.innerHTML = '';
-      proposals.forEach(proposal => {
-        const card = document.createElement('div');
-        card.className = 'proposal-card';
-        const hasVoted = proposal.voters.includes(userAddress);
-        card.innerHTML = `
-          <h3>${proposal.title}</h3>
-          <div class="details">${proposal.details}</div>
-          <div class="status ${proposal.status}">
-            ${proposal.status === "active" ? "Active" : "Closed"}
-          </div>
-          <div class="details">
-            ${proposal.status === "active" ? `Ends: ${proposal.ends}` : `Ended: ${proposal.ended}`}
-          </div>
-          <div class="vote-count">
-            Votes For: ${proposal.votesFor} &nbsp;|&nbsp; Votes Against: ${proposal.votesAgainst}
-          </div>
-          ${proposal.status === "active" ? `
-            <button ${hasVoted ? "disabled" : ""} onclick="voteProposal(${proposal.id}, true)">
-              Vote For
-            </button>
-            <button ${hasVoted ? "disabled" : ""} onclick="voteProposal(${proposal.id}, false)">
-              Vote Against
-            </button>
-            ${hasVoted ? `<div style="color:#ffb366;margin-top:0.5rem;">You have voted</div>` : ""}
-          ` : ""}
-        `;
-        list.appendChild(card);
-      });
-    }
+    <main class="proposals-container">
+        <div class="create-proposal">
+            <h2>Create Proposal</h2>
+            <form id="proposalForm">
+                <input type="text" placeholder="Proposal Title" required>
+                <textarea placeholder="Proposal Description" rows="4" required></textarea>
+                <button type="submit" class="vote-btn btn-yes">Submit Proposal</button>
+            </form>
+        </div>
 
-    window.voteProposal = function(id, isFor) {
-      const proposal = proposals.find(p => p.id === id);
-      if (!proposal || proposal.voters.includes(userAddress)) return;
-      if (isFor) proposal.votesFor++;
-      else proposal.votesAgainst++;
-      proposal.voters.push(userAddress);
-      renderGovernance();
-      updateGovernanceChart();
-    };
+        <div id="proposalsList">
+            <!-- Proposals will be dynamically inserted here -->
+        </div>
+    </main>
 
-    // Advanced: Create new proposal
-    document.getElementById('submitProposalBtn').onclick = function() {
-      const title = document.getElementById('newTitle').value.trim();
-      const details = document.getElementById('newDetails').value.trim();
-      const ends = document.getElementById('newEndDate').value;
-      const statusDiv = document.getElementById('proposalStatus');
-      if (!title || !details || !ends) {
-        statusDiv.textContent = "All fields are required.";
-        statusDiv.style.color = "#ff7e7e";
-        return;
-      }
-      proposals.push({
-        id: proposals.length + 1,
-        title,
-        details,
-        status: "active",
-        ends,
-        votesFor: 0,
-        votesAgainst: 0,
-        voters: []
-      });
-      statusDiv.textContent = "Proposal submitted!";
-      statusDiv.style.color = "#7eff7e";
-      renderGovernance();
-      updateGovernanceChart();
-      document.getElementById('newTitle').value = "";
-      document.getElementById('newDetails').value = "";
-      document.getElementById('newEndDate').value = "";
-      setTimeout(() => statusDiv.textContent = "", 2000);
-    };
+    <script>
+        const proposalsList = document.getElementById('proposalsList');
+        const proposalForm = document.getElementById('proposalForm');
 
-    // Advanced: Governance analytics chart
-    const ctx = document.getElementById('governanceChart').getContext('2d');
-    const governanceChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: proposals.map(p => p.title),
-        datasets: [
-          {
-            label: 'Votes For',
-            data: proposals.map(p => p.votesFor),
-            backgroundColor: '#7eff7e'
-          },
-          {
-            label: 'Votes Against',
-            data: proposals.map(p => p.votesAgainst),
-            backgroundColor: '#ff7e7e'
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { display: true } },
-        scales: { y: { beginAtZero: true } }
-      }
-    });
+        // WebSocket connection for real-time updates
+        const ws = new WebSocket('ws://localhost:8080');
+        
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'proposalUpdate') {
+                updateProposals(data.proposals);
+            }
+        };
 
-    function updateGovernanceChart() {
-      governanceChart.data.labels = proposals.map(p => p.title);
-      governanceChart.data.datasets[0].data = proposals.map(p => p.votesFor);
-      governanceChart.data.datasets[1].data = proposals.map(p => p.votesAgainst);
-      governanceChart.update();
-    }
+        function updateProposals(proposals) {
+            proposalsList.innerHTML = proposals.map(proposal => {
+                const yesPercentage = (proposal.votesYes / (proposal.votesYes + proposal.votesNo) * 100) || 0;
+                const noPercentage = 100 - yesPercentage;
 
-    renderGovernance();
-    updateGovernanceChart();
-  </script>
+                return `
+                    <div class="proposal-card">
+                        <span class="proposal-status ${proposal.active ? 'status-active' : 'status-pending'}">
+                            ${proposal.active ? 'Active' : 'Pending'}
+                        </span>
+                        <h2>${proposal.title}</h2>
+                        <p>${proposal.description}</p>
+                        
+                        <div class="vote-bar">
+                            <div class="vote-yes" style="width: ${yesPercentage}%"></div>
+                            <div class="vote-no" style="width: ${noPercentage}%"></div>
+                        </div>
+                        
+                        <div class="vote-stats">
+                            <p>Yes: ${proposal.votesYes.toLocaleString()} votes (${yesPercentage.toFixed(2)}%)</p>
+                            <p>No: ${proposal.votesNo.toLocaleString()} votes (${noPercentage.toFixed(2)}%)</p>
+                        </div>
+                        
+                        <div class="vote-buttons">
+                            <button class="vote-btn btn-yes" onclick="vote('${proposal.id}', true)">Vote Yes</button>
+                            <button class="vote-btn btn-no" onclick="vote('${proposal.id}', false)">Vote No</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function vote(proposalId, voteYes) {
+            if (!window.ethereum) {
+                alert('Please install MetaMask to vote');
+                return;
+            }
+
+            try {
+                const accounts = await window.ethereum.request({
+                    method: 'eth_requestAccounts'
+                });
+                // Implement voting logic here
+                console.log(`Voting ${voteYes ? 'Yes' : 'No'} on proposal ${proposalId} from ${accounts[0]}`);
+            } catch (err) {
+                console.error('Voting failed:', err);
+                alert('Voting failed: ' + err.message);
+            }
+        }
+
+        proposalForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            // Implement proposal creation logic here
+        });
+
+        // Fetch initial proposals
+        fetch('/api/proposals')
+            .then(res => res.json())
+            .then(updateProposals)
+            .catch(console.error);
+    </script>
 </body>
 </html>
